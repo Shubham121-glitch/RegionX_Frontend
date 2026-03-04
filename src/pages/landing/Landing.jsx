@@ -72,6 +72,9 @@ const monthlyRecommendations = {
   ],
 };
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
+
 function Landing() {
   const navigate = useNavigate();
   const regionSectionRef = useRef(null);
@@ -96,7 +99,7 @@ function Landing() {
 
   const fetchRegions = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/regions');
+      const response = await axios.get(`${API_URL}/regions`);
       setRegions(response.data);
     } catch (error) {
       console.error('Error fetching regions:', error);
@@ -200,7 +203,7 @@ function Landing() {
                 >
                   <div className="region-image-wrapper">
                     <img
-                      src={`http://localhost:5000${region.thumbnail}`}
+                      src={`${BASE_URL}${region.thumbnail}`}
                       alt={region.regionName}
                       className="region-image"
                       loading="lazy"

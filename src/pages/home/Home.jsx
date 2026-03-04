@@ -7,6 +7,8 @@ import Loading from '../../components/loading/Loading';
 import homeVideo from '../../assets/homebgvideo.mp4';
 import './home.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 function Home() {
   const { user, isSignedIn, isLoaded } = useUser();
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ function Home() {
 
   const sendUserToBackend = async (userData) => {
     try {
-      await axios.post("http://localhost:5000/api/users/saveuser", userData);
+      await axios.post(`${API_URL}/users/saveuser`, userData);
       console.log("User sent to backend:", userData);
     } catch (error) {
       console.error("Error sending user:", error);
