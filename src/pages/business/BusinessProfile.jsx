@@ -7,6 +7,9 @@ import Loading from '../../components/loading/Loading';
 import { getStaticMapUrl, downloadStaticMap } from '../../utils/imageHelpers';
 import './businessProfile.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
+
 function BusinessProfile() {
   const { user, isLoaded } = useUser();
   const navigate = useNavigate();
@@ -23,11 +26,11 @@ function BusinessProfile() {
   const fetchBusinessData = async () => {
     try {
       // First fetch business by userId
-      const businessRes = await axios.get(`http://localhost:5000/api/business/user/${user.id}`);
+      const businessRes = await axios.get(`${API_URL}/business/user/${user.id}`);
       setBusiness(businessRes.data);
       
       // Then fetch posts using the business MongoDB _id
-      const postsRes = await axios.get(`http://localhost:5000/api/business-posts/business/${businessRes.data._id}`);
+      const postsRes = await axios.get(`${API_URL}/business-posts/business/${businessRes.data._id}`);
       setPosts(postsRes.data);
     } catch (error) {
       console.error('Error fetching business data:', error);
@@ -207,7 +210,7 @@ function BusinessProfile() {
                   <div key={post._id} className="post-card">
                     {post.image && (
                       <div className="post-image-wrapper">
-                        <img src={`http://localhost:5000${post.image}`} alt={post.title} />
+                        <img src={`${BASE_URL}${post.image}`} alt={post.title} />
                       </div>
                     )}
                     <div className="post-content">

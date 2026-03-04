@@ -12,6 +12,9 @@ import GoogleMap from '../../components/Map/GoogleMap';
 import { getStaticMapUrl, downloadStaticMap } from '../../utils/imageHelpers';
 import './regionDetail.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
+
 function RegionDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -38,7 +41,7 @@ function RegionDetail() {
 
   const checkBusinessOwner = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/business/user/${user.id}`);
+      const response = await axios.get(`${API_URL}/business/user/${user.id}`);
       if (response.data) {
         setIsBusinessOwner(true);
         setBusinessData(response.data);
@@ -52,7 +55,7 @@ function RegionDetail() {
   const fetchRegion = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/regions/${id}`);
+      const response = await axios.get(`${API_URL}/regions/${id}`);
       setRegion(response.data);
     } catch (err) {
       setError('Failed to load region details. Please try again.');
@@ -65,7 +68,7 @@ function RegionDetail() {
   const fetchReviews = async () => {
     try {
       setReviewsLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/reviews/${id}`);
+      const response = await axios.get(`${API_URL}/reviews/${id}`);
       setReviews(response.data);
     } catch (err) {
       console.error('Error fetching reviews:', err);
@@ -162,7 +165,7 @@ function RegionDetail() {
                   onClick={() => openLightbox(index)}
                 >
                   <img 
-                    src={`http://localhost:5000${image}`} 
+                    src={`${BASE_URL}${image}`} 
                     alt={`${region.regionName} ${index + 1}`}
                     loading="lazy"
                   />
@@ -180,7 +183,7 @@ function RegionDetail() {
               {region.videos.map((video, index) => (
                 <div key={index} className="video-item">
                   <video 
-                    src={`http://localhost:5000${video}`}
+                    src={`${BASE_URL}${video}`}
                     controls
                     autoPlay
                     muted
@@ -228,7 +231,7 @@ function RegionDetail() {
                   {place.image && (
                     <div className="place-image-wrapper">
                       <img 
-                        src={`http://localhost:5000${place.image}`} 
+                        src={`${BASE_URL}${place.image}`} 
                         alt={place.name}
                         loading="lazy"
                       />
@@ -321,7 +324,7 @@ function RegionDetail() {
             <FiChevronLeft />
           </button>
           <img 
-            src={`http://localhost:5000${selectedImage}`} 
+            src={`${BASE_URL}${selectedImage}`} 
             alt="Gallery"
             onClick={(e) => e.stopPropagation()}
           />

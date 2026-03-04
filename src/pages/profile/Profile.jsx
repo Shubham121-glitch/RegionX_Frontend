@@ -6,6 +6,9 @@ import { FiUser, FiGrid, FiBriefcase, FiPlus, FiSettings, FiCheckCircle, FiClock
 import Loading from '../../components/loading/Loading';
 import './profile.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
+
 function Profile() {
   const { user, isLoaded } = useUser();
   const navigate = useNavigate();
@@ -22,11 +25,11 @@ function Profile() {
 
   const fetchBusinessData = async () => {
     try {
-      const businessRes = await axios.get(`http://localhost:5000/api/business/user/${user.id}`);
+      const businessRes = await axios.get(`${API_URL}/business/user/${user.id}`);
       setBusiness(businessRes.data);
       
       if (businessRes.data) {
-        const postsRes = await axios.get(`http://localhost:5000/api/business-posts/business/${businessRes.data._id}`);
+        const postsRes = await axios.get(`${API_URL}/business-posts/business/${businessRes.data._id}`);
         setPosts(postsRes.data);
       }
     } catch (error) {
@@ -199,7 +202,7 @@ function Profile() {
               posts.map((post) => (
                 <div key={post._id} className="post-grid-item">
                   <img 
-                    src={`http://localhost:5000${post.image}`} 
+                    src={`${BASE_URL}${post.image}`} 
                     alt={post.title}
                     onError={(e) => { e.target.src = '/placeholder-image.jpg'; }}
                   />

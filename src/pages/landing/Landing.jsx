@@ -192,7 +192,7 @@ function Landing() {
             ref={regionsRef}
           >
             {loading ? (
-              <div className="loading-regions">Loading regions...</div>
+              <Loading />
             ) : (
               filteredRegions.map((region, index) => (
                 <div
@@ -214,9 +214,7 @@ function Landing() {
                     {/* Rating Badge */}
                     {region.totalReviews > 0 && (
                       <div className="region-rating-badge">
-                        <FiStar className="rating-icon" />
-                        <span className="rating-value">{region.averageRating.toFixed(1)}</span>
-                        <span className="rating-count">({region.totalReviews})</span>
+                        <StarRating rating={region.averageRating} totalReviews={region.totalReviews} showCount={true} />
                       </div>
                     )}
                   </div>

@@ -3,6 +3,7 @@ import axios from 'axios';
 import './shorts.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
 
 function Shorts() {
   const [videos, setVideos] = useState([]);
@@ -120,7 +121,7 @@ function Shorts() {
           <div key={video._id} className="shorts-video-wrapper">
             <video
               ref={(el) => videoRefs.current.set(video._id, el)}
-              src={video.videoUrl}
+              src={video.videoUrl.startsWith('http') ? video.videoUrl : `${BASE_URL}${video.videoUrl}`}
               className="shorts-video"
               playsInline
               muted

@@ -3,6 +3,8 @@ import axios from 'axios';
 import { FiUpload, FiPlus, FiTrash2, FiCheck, FiX } from 'react-icons/fi';
 import './adminUpload.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 function AdminUpload() {
   const [formData, setFormData] = useState({
     regionName: '',
@@ -107,7 +109,7 @@ function AdminUpload() {
         }
       });
 
-      const response = await axios.post('http://localhost:5000/api/regions', data, {
+      const response = await axios.post(`${API_URL}/regions`, data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 

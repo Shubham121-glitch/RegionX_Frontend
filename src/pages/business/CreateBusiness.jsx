@@ -8,6 +8,8 @@ import './createBusiness.css';
 
 const categories = ['Guide', 'Medical', 'Restaurants', 'Home Stays', 'Travel and Transport'];
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 function CreateBusiness() {
   const { user, isLoaded } = useUser();
   const { getToken } = useAuth();
@@ -43,7 +45,7 @@ function CreateBusiness() {
     setRegionsLoading(true);
     setError('');
     try {
-      const response = await axios.get('http://localhost:5000/api/regions');
+      const response = await axios.get(`${API_URL}/regions`);
       console.log('Regions fetched:', response.data);
       setRegions(response.data);
     } catch (error) {
@@ -139,7 +141,7 @@ function CreateBusiness() {
         submitData.append('profileImage', formData.profileImage);
       }
 
-      await axios.post('http://localhost:5000/api/business', submitData, {
+      await axios.post(`${API_URL}/business`, submitData, {
         headers: { 
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`

@@ -25,6 +25,9 @@ const categories = [
   'Travel and Transport'
 ];
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
+
 function Services() {
   const navigate = useNavigate();
   const { user, isSignedIn } = useUser();
@@ -52,7 +55,7 @@ function Services() {
 
   const fetchRegions = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/regions');
+      const response = await axios.get(`${API_URL}/regions`);
       setRegions(response.data);
     } catch (error) {
       console.error('Error fetching regions:', error);
@@ -71,7 +74,7 @@ function Services() {
         params.lng = userLocation.lng;
       }
 
-      const response = await axios.get('http://localhost:5000/api/services', { params });
+      const response = await axios.get(`${API_URL}/services`, { params });
       setServices(response.data);
     } catch (error) {
       console.error('Error fetching services:', error);
@@ -109,7 +112,7 @@ function Services() {
   const fetchServicesByLocation = async (lat, lng) => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/services', {
+      const response = await axios.get(`${API_URL}/services`, {
         params: { lat, lng }
       });
       setServices(response.data);

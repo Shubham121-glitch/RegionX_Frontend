@@ -5,6 +5,10 @@ import axios from 'axios';
 import StarRating from './StarRating';
 import './reviewCard.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
+
 function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
   const { user, isSignedIn } = useUser();
   const { getToken } = useAuth();
@@ -38,7 +42,7 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
     try {
       const token = await getToken();
       const response = await axios.get(
-        `http://localhost:5000/api/reviews/${review._id}/vote-status`,
+        `${API_URL}/reviews/${review._id}/vote-status`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setUserVote(response.data.voteType);
@@ -60,7 +64,7 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
     if (!window.confirm('Are you sure you want to delete this review?')) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/reviews/${review._id}`, {
+      await axios.delete(`${API_URL}/reviews/${review._id}`, {
         data: { userId: user.id }
       });
       onDelete(review._id);
@@ -86,7 +90,7 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
 
     setLoading(true);
     try {
-      const response = await axios.put(`http://localhost:5000/api/reviews/${review._id}`, {
+      const response = await axios.put(`${API_URL}/reviews/${review._id}`, {
         userId: user.id,
         rating: editRating,
         comment: editComment
@@ -108,7 +112,7 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
     try {
       const token = await getToken();
       const response = await axios.post(
-        `http://localhost:5000/api/reviews/${review._id}/vote`,
+        `${API_URL}/reviews/${review._id}/vote`,
         { voteType },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -130,7 +134,7 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
     try {
       const token = await getToken();
       const response = await axios.post(
-        `http://localhost:5000/api/reviews/${review._id}/reply`,
+        `${API_URL}/reviews/${review._id}/reply`,
         { text: replyText },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -152,7 +156,7 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
     try {
       const token = await getToken();
       const response = await axios.put(
-        `http://localhost:5000/api/reviews/${review._id}/reply`,
+        `${API_URL}/reviews/${review._id}/reply`,
         { text: replyText },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -173,7 +177,7 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
     try {
       const token = await getToken();
       await axios.delete(
-        `http://localhost:5000/api/reviews/${review._id}/reply`,
+        `${API_URL}/reviews/${review._id}/reply`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
@@ -258,9 +262,10 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
           {review.image && (
             <div className="review-media">
               <img 
-                src={`http://localhost:5000${review.image}`} 
+                src={`${BASE_URL}${review.image}`} 
                 alt="Review" 
-                className="review-image"
+                className="review-image" 
+                onClick={() => window.open(`${BASE_URL}${review.image}`, '_blank')}
               />
             </div>
           )}
@@ -268,7 +273,7 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
           {review.video && (
             <div className="review-media">
               <video 
-                src={`http://localhost:5000${review.video}`} 
+                src={`${BASE_URL}${review.video}`} 
                 controls
                 className="review-video"
               />

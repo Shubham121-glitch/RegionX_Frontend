@@ -23,6 +23,9 @@ import Loading from '../../components/loading/Loading';
 import { getStaticMapUrl, downloadStaticMap } from '../../utils/imageHelpers';
 import './businessProfilePublic.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
+
 function BusinessProfilePublic() {
   const { businessId } = useParams();
   const navigate = useNavigate();
@@ -43,9 +46,9 @@ function BusinessProfilePublic() {
     try {
       setLoading(true);
       const [businessRes, postsRes, userRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/business/${businessId}`),
-        axios.get(`http://localhost:5000/api/business-posts/business/${businessId}`),
-        axios.get(`http://localhost:5000/api/users/me/${businessId}`)
+        axios.get(`${API_URL}/business/${businessId}`),
+        axios.get(`${API_URL}/business-posts/business/${businessId}`),
+        axios.get(`${API_URL}/users/me/${businessId}`)
       ]);
       
       setBusiness(businessRes.data);
@@ -140,7 +143,7 @@ function BusinessProfilePublic() {
             <div className="insta-avatar-inner">
               {userProfileImage || business.profileImage ? (
                 <img 
-                  src={userProfileImage || `http://localhost:5000${business.profileImage}`} 
+                  src={userProfileImage || `${BASE_URL}${business.profileImage}`} 
                   alt={business.businessTitle}
                   className="insta-avatar-img"
                 />
@@ -244,7 +247,7 @@ function BusinessProfilePublic() {
                   <div key={post._id} className="insta-grid-item">
                     {post.image ? (
                       <img 
-                        src={`http://localhost:5000${post.image}`} 
+                        src={`${BASE_URL}${post.image}`} 
                         alt={post.title}
                         onError={(e) => { 
                           e.target.style.display = 'none'; 
@@ -283,7 +286,7 @@ function BusinessProfilePublic() {
                   {post.image && (
                     <div className="insta-list-image">
                       <img 
-                        src={`http://localhost:5000${post.image}`} 
+                        src={`${BASE_URL}${post.image}`} 
                         alt={post.title}
                         onError={(e) => { e.target.style.display = 'none'; }}
                       />

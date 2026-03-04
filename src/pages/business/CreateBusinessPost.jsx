@@ -6,6 +6,8 @@ import { FiUpload, FiMapPin, FiTag, FiFileText } from 'react-icons/fi';
 import Loading from '../../components/loading/Loading';
 import './createBusinessPost.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 function CreateBusinessPost() {
   const { user, isLoaded } = useUser();
   const { getToken } = useAuth();
@@ -33,7 +35,7 @@ function CreateBusinessPost() {
 
   const fetchBusiness = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/business/user/${user.id}`);
+      const response = await axios.get(`${API_URL}/business/user/${user.id}`);
       setBusiness(response.data);
     } catch (error) {
       setError('You need to create a business first');
@@ -77,7 +79,7 @@ function CreateBusinessPost() {
         submitData.append('video', formData.video);
       }
 
-      await axios.post('http://localhost:5000/api/business-posts', submitData, {
+      await axios.post(`${API_URL}/business-posts`, submitData, {
         headers: { 
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`

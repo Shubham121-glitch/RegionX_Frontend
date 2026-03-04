@@ -50,6 +50,8 @@ const defaultVideo = {
   posterNight: '/videos/default-night-poster.jpg'
 };
 
+const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
+
 function RegionHeroVideo({ regionSlug, regionName, regionThumbnail }) {
   const [videoData, setVideoData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -77,7 +79,7 @@ function RegionHeroVideo({ regionSlug, regionName, regionThumbnail }) {
       <div 
         className="region-hero-fallback"
         style={{
-          backgroundImage: `url(http://localhost:5000${regionThumbnail})`
+          backgroundImage: `url(${BASE_URL}${regionThumbnail})`
         }}
       >
         <div className="region-hero-fallback-overlay" />

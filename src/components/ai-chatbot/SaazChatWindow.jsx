@@ -42,7 +42,7 @@ const SaazChatWindow = ({ isOpen, onClose }) => {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+  const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

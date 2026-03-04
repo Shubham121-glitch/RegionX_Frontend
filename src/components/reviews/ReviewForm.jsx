@@ -5,6 +5,8 @@ import axios from 'axios';
 import StarRating from './StarRating';
 import './reviewForm.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 function ReviewForm({ regionId, onReviewAdded }) {
   const { user, isSignedIn } = useUser();
   const [rating, setRating] = useState(0);
@@ -80,7 +82,7 @@ function ReviewForm({ regionId, onReviewAdded }) {
         formData.append('video', video);
       }
 
-      const response = await axios.post('http://localhost:5000/api/reviews', formData, {
+      const response = await axios.post(`${API_URL}/reviews`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
