@@ -1,0 +1,333 @@
+/*
+  Production-level CSS for RegionX React NavBar component
+  - Fully responsive
+  - Theme controlled (dark & light) using CSS variables
+  - Smooth transitions and animations
+  - Clean spacing and pixel-perfect alignment
+  - Accessibility and focus states
+  - Mobile menu with slide-in animation
+*/
+
+:root {
+  /* Theme variables common to both themes */
+  --navbar-height: 4rem;
+  --max-container-width: 1400px;
+  --border-radius: 0.5rem;
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-soft: rgba(0, 0, 0, 0.1);
+  --focus-outline-color: var(--accent-color);
+  --focus-outline-width: 3px;
+  --focus-outline-offset: 2px;
+  --z-navbar: 1000;
+  --z-mobile-menu: 1100;
+}
+
+/* Light theme variables */
+[data-theme="light"] {
+  --bg-primary: #f9fafb; /* off-white */
+  --bg-secondary: #ffffff; /* white */
+  --text-primary: #333333; /* dark gray */
+  --text-secondary: #666666; /* medium gray */
+  --accent-color: #06b6d4; /* cyan accent */
+  --hover-bg: rgba(6, 182, 212, 0.15); /* light cyan hover */
+  --border-color: #e5e7eb; /* light gray border */
+  --shadow-soft: rgba(6, 182, 212, 0.3);
+}
+
+/* Dark theme variables */
+[data-theme="dark"] {
+  --bg-primary: #121212; /* deep neutral background */
+  --bg-secondary: rgba(18, 18, 18, 0.75); /* glassy background */
+  --text-primary: #e0e0e0; /* light text */
+  --text-secondary: #a0a0a0; /* softer text */
+  --accent-color: #0891b2; /* cyan accent for dark mode */
+  --hover-bg: rgba(8, 145, 178, 0.25); /* glowing cyan hover */
+  --border-color: rgba(255, 255, 255, 0.1);
+  --shadow-soft: rgba(8, 145, 178, 0.4);
+}
+
+/* Navbar base styles */
+.navbar-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--navbar-height);
+  background: var(--bg-secondary);
+  backdrop-filter: blur(12px);
+  box-shadow: none;
+  border-bottom: 1px solid transparent;
+  z-index: var(--z-navbar);
+  transition: background var(--transition-smooth), box-shadow var(--transition-smooth), height var(--transition-smooth), border-color var(--transition-smooth);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+}
+
+.navbar-header.scrolled {
+  background: var(--bg-primary);
+  backdrop-filter: none;
+  box-shadow: 0 2px 8px var(--shadow-soft);
+  border-bottom-color: var(--border-color);
+  height: calc(var(--navbar-height) * 0.9);
+}
+
+.navbar-container {
+  width: 100%;
+  max-width: var(--max-container-width);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+/* Logo styles */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.navbar-logo:hover,
+.navbar-logo:focus-visible {
+  color: var(--accent-color);
+  outline: none;
+  transform: scale(1.05);
+}
+
+.logo-icon {
+  font-size: 1.8rem;
+  color: var(--accent-color);
+  margin-right: 0.3rem;
+  display: flex;
+  align-items: center;
+}
+
+.logo-x {
+  color: var(--accent-color);
+}
+
+/* Navigation links and buttons container */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-link-simple,
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.nav-link-simple:hover,
+.nav-btn:hover,
+.nav-link-simple:focus-visible,
+.nav-btn:focus-visible {
+  background: var(--hover-bg);
+  color: var(--accent-color);
+  outline-offset: var(--focus-outline-offset);
+  outline: var(--focus-outline-width) solid var(--focus-outline-color);
+  box-shadow: 0 2px 6px var(--shadow-soft);
+}
+
+.nav-link-simple:focus-visible,
+.nav-btn:focus-visible {
+  outline-offset: var(--focus-outline-offset);
+}
+
+/* Icons inside buttons and links */
+.nav-link-simple svg,
+.nav-btn svg {
+  vertical-align: middle;
+  font-size: 1.2rem;
+  color: inherit;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: transform var(--transition-smooth), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+  outline: none;
+  transform: rotate(360deg);
+}
+
+/* Menu toggle button for mobile */
+.menu-toggle {
+  display: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--border-radius);
+  border: none;
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.menu-toggle:hover,
+.menu-toggle:focus-visible {
+  background: var(--accent-color);
+  color: var(--bg-primary);
+  outline: none;
+}
+
+/* Mobile menu styles */
+.mobile-menu {
+  position: fixed;
+  top: var(--navbar-height);
+  left: 0;
+  right: 0;
+  background: var(--bg-secondary);
+  backdrop-filter: blur(20px);
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity var(--transition-smooth), visibility var(--transition-smooth), transform var(--transition-smooth);
+  box-shadow: 0 10px 40px var(--shadow-soft);
+  z-index: var(--z-mobile-menu);
+  max-height: calc(100vh - var(--navbar-height));
+  overflow-y: auto;
+}
+
+.mobile-menu.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mobile-link,
+.mobile-nav-btn {
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius);
+  font-size: 1.1rem;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  user-select: none;
+}
+
+.mobile-link:hover,
+.mobile-nav-btn:hover,
+.mobile-link:focus-visible,
+.mobile-nav-btn:focus-visible {
+  background: var(--hover-bg);
+  color: var(--accent-color);
+  outline: none;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Chat notification badge positioning inside chat button */
+.chat-btn {
+  position: relative;
+}
+
+/* Accessibility focus outline for all interactive elements */
+button:focus-visible,
+a:focus-visible {
+  outline-offset: var(--focus-outline-offset);
+  outline: var(--focus-outline-width) solid var(--focus-outline-color);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .navbar-actions > a,
+  .navbar-actions > button:not(.menu-toggle):not(.theme-toggle) {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+  }
+}
+
+/* Utility for vertical centering icons and text */
+.nav-link-simple svg,
+.nav-btn svg,
+.mobile-link svg,
+.mobile-nav-btn svg {
+  vertical-align: middle;
+  font-size: 1.2rem;
+  color: inherit;
+}
+
+/* Prevent layout shift on hover by reserving space for focus outline */
+.nav-link-simple,
+.nav-btn,
+.mobile-link,
+.mobile-nav-btn {
+  outline-offset: var(--focus-outline-offset);
+}
+
+/* Smooth scaling on interaction */
+.nav-link-simple:active,
+.nav-btn:active,
+.mobile-link:active,
+.mobile-nav-btn:active {
+  transform: scale(0.97);
+  transition: transform 100ms ease-in-out;
+}
+
+/* Scrollbar styling for mobile menu */
+.mobile-menu::-webkit-scrollbar {
+  width: 8px;
+}
+.mobile-menu::-webkit-scrollbar-thumb {
+  background-color: var(--accent-color);
+  border-radius: 4px;
+}
+.mobile-menu::-webkit-scrollbar-track {
+  background: transparent;
+}

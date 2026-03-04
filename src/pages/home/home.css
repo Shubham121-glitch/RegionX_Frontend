@@ -1,0 +1,126 @@
+.home-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+}
+
+/* Background Video */
+.home-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  background: #000;
+  display: block;
+}
+
+.home-video.hide {
+  opacity: 0;
+}
+
+.home-video.show {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Overlay for text readability */
+.home-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.home-container.light {
+  --hero-font-weight: 700;
+  --hero-text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  --tagline-color: rgba(255, 255, 255, 0.95);
+  --tagline-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.home-container.dark {
+  --hero-font-weight: 600;
+  --hero-text-shadow: 0 0 30px rgba(82, 211, 147, 0.4), 0 4px 20px rgba(0, 0, 0, 0.4);
+  --tagline-color: rgba(255, 255, 255, 0.9);
+  --tagline-shadow: 0 0 20px rgba(82, 211, 147, 0.2);
+}
+
+.hero-section {
+  text-align: center;
+  padding: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-logo {
+  font-size: 5rem;
+  font-weight: var(--hero-font-weight);
+  color: white;
+  text-shadow: var(--hero-text-shadow);
+  margin-bottom: 1rem;
+  letter-spacing: -2px;
+  line-height: 1.1;
+  transition: all 0.5s ease-in-out;
+}
+
+.hero-tagline {
+  font-size: 1.4rem;
+  color: var(--tagline-color);
+  margin-bottom: 2.5rem;
+  text-shadow: var(--tagline-shadow);
+  font-weight: 400;
+  letter-spacing: 1px;
+  line-height: 1.5;
+  transition: all 0.5s ease-in-out;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn {
+  padding: 0.75rem 2rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  letter-spacing: var(--button-letter-spacing);
+  text-transform: uppercase;
+}
+
+.btn-outline {
+  background: white;
+  color: #333;
+  border: 2px solid white;
+}
+
+.btn-outline:hover {
+  background: transparent;
+  color: white;
+}
+
+.btn-primary {
+  background: #4A90D9;
+  color: white;
+  border: 2px solid #4A90D9;
+}
+
+.btn-primary:hover {
+  background: #357ABD;
+  border-color: #357ABD;
+}

@@ -1,0 +1,311 @@
+/* Admin Upload Page Styles */
+.admin-upload-container {
+  min-height: 100vh;
+  position: relative;
+  padding: 6rem 2rem 4rem;
+  overflow: hidden;
+}
+
+/* Background Image */
+.admin-upload-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  z-index: -2;
+}
+
+/* Dark Overlay */
+.admin-upload-container::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+/* Keep navbar white on this page */
+.admin-upload-page .navbar-header.scrolled {
+  background: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+.admin-upload-page .navbar-header.scrolled .navbar-logo,
+.admin-upload-page .navbar-header.scrolled .nav-link-simple,
+.admin-upload-page .navbar-header.scrolled .theme-toggle,
+.admin-upload-page .navbar-header.scrolled .menu-toggle {
+  color: white !important;
+}
+
+.admin-upload-page .navbar-header.scrolled .nav-link-simple:hover {
+  color: var(--accentClr) !important;
+}
+
+.admin-upload-page .navbar-header.scrolled .theme-toggle {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.admin-upload-container {
+  min-height: 100vh;
+  position: relative;
+  padding: 6rem 2rem 4rem;
+  overflow: hidden;
+}
+
+.admin-upload-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.admin-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 2rem;
+  text-align: center;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Message */
+.message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+}
+
+.message.success {
+  background: rgba(82, 211, 147, 0.2);
+  color: #3bc583;
+  border: 1px solid rgba(82, 211, 147, 0.4);
+}
+
+.message.error {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+/* Form */
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* Glassmorphism Form Sections */
+.form-section {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.form-section .section-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--accentClr);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0.5rem;
+}
+
+/* Glassmorphism Inputs */
+.form-group input[type="text"],
+.form-group textarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input[type="text"]::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accentClr);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(82, 211, 147, 0.2);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* File Input */
+.file-input-wrapper {
+  position: relative;
+}
+
+.file-input-wrapper input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-input-display {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+.file-input-wrapper:hover .file-input-display {
+  border-color: var(--accentClr);
+  background: rgba(82, 211, 147, 0.1);
+}
+
+/* Place Form Card - Glassmorphism */
+.place-form-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.place-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.place-form-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+}
+
+.btn-remove {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(239, 68, 68, 0.2);
+  color: #ff6b6b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.btn-remove:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+/* Buttons */
+.btn-add-place {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-add-place:hover {
+  border-color: var(--accentClr);
+  color: var(--accentClr);
+  background: rgba(82, 211, 147, 0.1);
+}
+
+.btn-submit {
+  padding: 1.25rem 3rem;
+  background: var(--accentClr);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(82, 211, 147, 0.4);
+  align-self: center;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: #3bc583;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(82, 211, 147, 0.5);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-upload-container {
+    padding: 5rem 1rem 2rem;
+  }
+  
+  .admin-title {
+    font-size: 1.8rem;
+  }
+  
+  .form-section {
+    padding: 1.5rem;
+  }
+  
+  .place-form-card {
+    padding: 1rem;
+  }
+}

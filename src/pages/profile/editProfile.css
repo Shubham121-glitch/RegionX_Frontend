@@ -1,0 +1,74 @@
+.edit-profile-container {
+  min-height: 100vh;
+  background: var(--bgclr);
+  padding: 2rem 1rem;
+}
+
+.edit-profile-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Back Button */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: rgba(128, 128, 128, 0.1);
+  color: var(--textP);
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1.5rem;
+}
+
+.back-btn:hover {
+  background: rgba(128, 128, 128, 0.2);
+  transform: translateX(-3px);
+}
+
+/* Clerk UserProfile Theme Override */
+.edit-profile-wrapper .cl-userProfile-root {
+  background: var(--bgclr);
+  color: var(--textP);
+}
+
+.edit-profile-wrapper .cl-card {
+  background: rgba(128, 128, 128, 0.05);
+  border: 1px solid rgba(128, 128, 128, 0.1);
+  border-radius: 12px;
+}
+
+.edit-profile-wrapper .cl-headerTitle {
+  color: var(--textP);
+}
+
+.edit-profile-wrapper .cl-headerSubtitle {
+  color: var(--textS);
+}
+
+.edit-profile-wrapper .cl-formFieldLabel {
+  color: var(--textP);
+}
+
+.edit-profile-wrapper .cl-formFieldInput {
+  background: var(--bgclr);
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  color: var(--textP);
+}
+
+.edit-profile-wrapper .cl-formButtonPrimary {
+  background: var(--accentClr);
+}
+
+.edit-profile-wrapper .cl-profileSectionTitle {
+  color: var(--textP);
+}
+
+.edit-profile-wrapper .cl-profileSectionContent {
+  color: var(--textS);
+}

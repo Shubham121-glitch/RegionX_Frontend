@@ -1,0 +1,23 @@
+.app-layout {
+  min-height: 100vh;
+  background: var(--bgclr);
+}
+
+.page-content {
+  padding-top: 80px;
+  min-height: 100vh;
+}
+
+.page-content.with-back-btn {
+  padding-top: 140px;
+}
+
+@media (max-width: 768px) {
+  .page-content {
+    padding-top: 70px;
+  }
+  
+  .page-content.with-back-btn {
+    padding-top: 120px;
+  }
+}

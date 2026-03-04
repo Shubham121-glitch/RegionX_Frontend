@@ -1,0 +1,115 @@
+h2 {
+    font-size: 2.8rem;
+    line-height: 100%;
+    margin-top: 2.5rem;
+    color: var(--textP);
+    text-transform: capitalize;
+}
+
+.overlay-text {
+    position: relative;
+}
+
+.overlay-text::before {
+    content: attr(datatype);
+    position: absolute;
+    font-size: 6rem;
+    color: var(--textP);
+    top: -70%;
+    font-weight: bold;
+    text-transform: uppercase;
+    left: -60%;
+    z-index: -1;
+    opacity: .08;
+}
+
+.self-end {
+    align-self: flex-end;
+}
+
+.card {
+    padding: 1.5rem;
+    background: var(--surface);
+    border: .1rem solid rgb(123, 123, 123, .2);
+    border-radius: 1rem;
+    flex: 1;
+    flex-basis: 300px
+}
+
+.mt-5 {
+    margin-top: 5rem;
+}
+
+h4 {
+    font-size: 1.7rem;
+    color: var(--textP);
+}
+
+.service-icon {
+    width: 4rem;
+    aspect-ratio: 1;
+    font-size: 1.8rem;
+    color: var(--textP);
+    background: var(--bgclr);
+    border: .1rem solid rgb(123, 123, 123, .2);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100vw;
+}
+
+.arrow {
+    vertical-align: middle;
+}
+
+.m-block-1 {
+    margin-block: 1rem;
+}
+
+.strech {
+    align-items: stretch;
+}
+
+.hide-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.design {
+    position: relative;
+}
+
+.design::before {
+    content: '';
+    position: absolute;
+    background: var(--accentClr);
+    inset: 2rem 0 7rem -0.6rem;
+    z-index: -1;
+    border-radius: inherit;
+}
+
+.border-btm{
+    border-bottom: .1rem solid rgb(123, 123, 123, .2);
+}
+
+@media screen and (max-width:890px) {
+    .overlay-text {
+        position: relative;
+    }
+
+    .overlay-text::before {
+        content: attr(datatype);
+        position: absolute;
+        font-size: 4rem;
+        color: var(--textP);
+        top: -10%;
+        font-weight: bold;
+        text-transform: uppercase;
+        left: -30%;
+        z-index: -1;
+        opacity: .08;
+    }
+}

@@ -1,0 +1,167 @@
+/* Auth Pages - Glassmorphism with Background */
+.auth-container {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  transition: background-image 0.5s ease-in-out;
+}
+
+.auth-container.dark {
+  background-image: url('../../assets/bghomedark.png');
+}
+
+.auth-container.light {
+  background-image: url('../../assets/bghome.png');
+}
+
+.auth-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+.auth-glass {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+  max-width: 450px;
+  width: 100%;
+}
+
+/* Clerk Component Customization */
+.clerk-card {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.clerk-title {
+  color: white !important;
+  font-size: 1.8rem !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.clerk-subtitle {
+  color: rgba(255, 255, 255, 0.8) !important;
+  text-align: center !important;
+}
+
+/* Field Labels - More Visible */
+.clerk-formFieldLabel {
+  color: white !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.clerk-button {
+  background: var(--accentClr) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 25px !important;
+  padding: 0.8rem 2rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  transition: all 0.3s ease !important;
+}
+
+.clerk-button:hover {
+  background: #3bc583 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 15px rgba(82, 211, 147, 0.4) !important;
+}
+
+.clerk-input {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 10px !important;
+  color: white !important;
+  padding: 0.8rem 1rem !important;
+}
+
+.clerk-input:focus {
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-color: var(--accentClr) !important;
+  box-shadow: 0 0 0 2px rgba(82, 211, 147, 0.3) !important;
+}
+
+.clerk-input::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.clerk-link {
+  color: var(--accentClr) !important;
+  font-weight: 500 !important;
+}
+
+.clerk-link:hover {
+  color: #3bc583 !important;
+}
+
+.clerk-divider {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+.clerk-social-btn {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 10px !important;
+  color: white !important;
+}
+
+.clerk-social-btn:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Transparent Footer */
+.clerk-footer {
+  background: transparent !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  margin: 1.5rem -2rem -2rem -2rem !important;
+  padding: 1.5rem 2rem !important;
+}
+
+.clerk-footerActionText {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.clerk-footerActionLink {
+  color: var(--accentClr) !important;
+  font-weight: 600 !important;
+}
+
+.clerk-footerActionLink:hover {
+  color: #3bc583 !important;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .auth-glass {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .clerk-footer {
+    margin: 1.5rem -1.5rem -1.5rem -1.5rem !important;
+    padding: 1.5rem !important;
+  }
+}

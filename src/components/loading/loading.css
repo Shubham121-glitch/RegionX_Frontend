@@ -1,0 +1,186 @@
+/* Loading Animation - Travel Theme */
+.loading-container {
+  min-height: 100vh;
+  background: var(--bgclr);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Earth Animation */
+.earth-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-earth {
+  font-size: 4rem;
+  color: var(--accentClr);
+  animation: earthPulse 2s ease-in-out infinite, earthRotate 4s linear infinite;
+  filter: drop-shadow(0 0 20px rgba(82, 211, 147, 0.5));
+}
+
+/* Orbit Rings */
+.orbit-ring {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 2px solid rgba(82, 211, 147, 0.3);
+  border-radius: 50%;
+  animation: orbitRotate 3s linear infinite;
+}
+
+.orbit-ring::before {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--accentClr);
+  border-radius: 50%;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px var(--accentClr);
+}
+
+.ring-2 {
+  width: 150px;
+  height: 150px;
+  border-color: rgba(82, 211, 147, 0.15);
+  animation: orbitRotate 5s linear infinite reverse;
+}
+
+.ring-2::before {
+  width: 8px;
+  height: 8px;
+  background: rgba(82, 211, 147, 0.8);
+  box-shadow: 0 0 8px rgba(82, 211, 147, 0.8);
+}
+
+/* Text */
+.loading-text {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--textP);
+  letter-spacing: 2px;
+  animation: textFade 2s ease-in-out infinite;
+}
+
+/* Loading Dots */
+.loading-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.loading-dots span {
+  width: 10px;
+  height: 10px;
+  background: var(--accentClr);
+  border-radius: 50%;
+  animation: dotBounce 1.4s ease-in-out infinite;
+}
+
+.loading-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Animations */
+@keyframes earthPulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 20px rgba(82, 211, 147, 0.5));
+  }
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 40px rgba(82, 211, 147, 0.8));
+  }
+}
+
+@keyframes earthRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbitRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes textFade {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes dotBounce {
+  0%, 80%, 100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: translateY(-15px);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .earth-wrapper {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .loading-earth {
+    font-size: 3rem;
+  }
+  
+  .orbit-ring {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .ring-2 {
+    width: 130px;
+    height: 130px;
+  }
+  
+  .loading-text {
+    font-size: 1.5rem;
+  }
+}

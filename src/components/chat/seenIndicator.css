@@ -1,0 +1,28 @@
+/* ======================================
+   Seen Indicator — Clean SaaS Style
+====================================== */
+
+.seen-indicator {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  margin-top: 4px;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+/* Pending (Delivered) */
+.seen-indicator.pending {
+  color: #94a3b8; /* soft slate */
+  opacity: 0.9;
+}
+
+/* Seen */
+.seen-indicator.seen {
+  color: #0891b2; /* your cyan theme */
+  font-weight: 600;
+}
+
+/* Optional subtle fade on hover */
+.message-bubble:hover .seen-indicator {
+  opacity: 0.8;
+}

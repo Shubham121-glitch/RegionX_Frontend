@@ -1,0 +1,1397 @@
+/* Instagram-Style Business Public Profile */
+.business-public-profile.insta-style {
+  min-height: 100vh;
+  background: var(--bgclr);
+  max-width: 935px;
+  margin: 0 auto;
+  padding-bottom: 2rem;
+}
+
+/* Instagram Header */
+.insta-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+  background: var(--bgclr);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.insta-back-btn,
+.insta-more-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--textP);
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.insta-back-btn:hover,
+.insta-more-btn:hover {
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.insta-username {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--textP);
+  margin: 0;
+}
+
+/* Instagram Profile Section */
+.insta-profile-section {
+  padding: 2rem 1.5rem 1.5rem;
+  background: var(--bgclr);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+}
+
+.insta-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Avatar */
+.insta-avatar {
+  flex-shrink: 0;
+}
+
+.insta-avatar-inner {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.insta-avatar-inner::before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--bgclr);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.insta-avatar-inner {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  color: var(--accentClr);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.insta-avatar-inner:hover {
+  transform: scale(1.05);
+}
+
+.insta-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--bgclr);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.insta-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--bgclr);
+}
+
+/* Stats */
+.insta-stats {
+  display: flex;
+  gap: 2.5rem;
+  flex: 1;
+}
+
+.insta-stat {
+  text-align: center;
+  cursor: pointer;
+}
+
+.insta-stat-number {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--textP);
+  transition: color 0.3s ease;
+}
+
+.insta-stat:hover .insta-stat-number {
+  color: var(--accentClr);
+}
+
+.insta-stat:hover .insta-stat-label {
+  color: var(--textP);
+}
+
+.insta-stat-label {
+  font-size: 0.9rem;
+  color: var(--textS);
+}
+
+/* Profile Info */
+.insta-profile-info {
+  margin-bottom: 1.5rem;
+  padding: 0 1rem;
+}
+
+.insta-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--textP);
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.03em;
+}
+
+.insta-category {
+  display: inline-block;
+  font-size: 0.9rem;
+  color: var(--textS);
+  margin-bottom: 0.5rem;
+}
+
+.insta-profile-info .verify-badge {
+  margin-left: 0.5rem;
+}
+
+.insta-bio {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--textP);
+  margin: 0.75rem 0;
+}
+
+.insta-contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.insta-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--accentClr);
+}
+
+.insta-regions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--textS);
+}
+
+/* Action Buttons */
+.insta-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.insta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  flex: 1;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.insta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.insta-btn-primary {
+  background: var(--accentClr);
+  color: white;
+}
+
+.insta-btn-primary:hover {
+  background: #2563eb;
+}
+
+.insta-btn-secondary {
+  background: rgba(128, 128, 128, 0.1);
+  color: var(--textP);
+}
+
+.insta-btn-secondary:hover {
+  background: rgba(128, 128, 128, 0.2);
+}
+
+.insta-btn-icon {
+  width: 44px;
+  flex: 0 0 44px;
+  padding: 0;
+  background: rgba(128, 128, 128, 0.1);
+  color: var(--textP);
+  font-size: 1.25rem;
+}
+
+.insta-btn-icon:hover {
+  background: rgba(128, 128, 128, 0.2);
+}
+
+/* Instagram Tabs */
+.insta-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  border-top: 1px solid rgba(128, 128, 128, 0.15);
+  margin-top: 1.5rem;
+}
+
+.insta-tab {
+  padding: 1rem 0.5rem;
+  background: none;
+  border: none;
+  color: var(--textS);
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.insta-tab.active {
+  color: var(--textP);
+}
+
+.insta-tab.active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--textP);
+}
+
+/* Instagram Content Grid */
+.insta-content {
+  padding: 1rem;
+}
+
+.insta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 0 0.5rem;
+}
+
+.insta-grid-item {
+  aspect-ratio: 1;
+  position: relative;
+  overflow: hidden;
+  background: rgba(128, 128, 128, 0.1);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: transform 0.3s ease;
+}
+
+.insta-grid-item:hover {
+  transform: scale(1.03);
+  z-index: 10;
+}
+
+.insta-grid-item {
+  aspect-ratio: 1;
+  position: relative;
+  overflow: hidden;
+  background: rgba(128, 128, 128, 0.1);
+  cursor: pointer;
+}
+
+.insta-grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.insta-grid-item:hover img {
+  transform: scale(1.1);
+}
+
+.insta-grid-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--textS);
+  font-size: 2rem;
+}
+
+.insta-grid-placeholder span {
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+  text-align: center;
+  padding: 0 0.5rem;
+}
+
+.insta-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
+
+.insta-grid-item:hover .insta-grid-overlay {
+  opacity: 1;
+}
+
+.insta-overlay-text {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.insta-offer-badge {
+  background: #f59e0b;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Instagram List View */
+.insta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.insta-list-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(128, 128, 128, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(128, 128, 128, 0.1);
+}
+
+.insta-list-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.insta-list-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.insta-list-content {
+  flex: 1;
+}
+
+.insta-list-content h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--textP);
+  margin: 0 0 0.5rem;
+}
+
+.insta-list-content p {
+  font-size: 0.9rem;
+  color: var(--textS);
+  line-height: 1.5;
+  margin: 0 0 0.75rem;
+}
+
+.insta-offer-tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.insta-list-location {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--textS);
+}
+
+/* Instagram Empty State */
+.insta-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--textS);
+}
+
+.insta-empty-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  background: rgba(128, 128, 128, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+.insta-empty h3 {
+  font-size: 1.5rem;
+  color: var(--textP);
+  margin: 0 0 0.5rem;
+}
+
+.insta-empty p {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Instagram Locations Section (Story Style) */
+.insta-locations-section {
+  padding: 1.5rem;
+  border-top: 1px solid rgba(128, 128, 128, 0.15);
+}
+
+.insta-section-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--textS);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 1rem;
+}
+
+.insta-locations-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-width: none;
+}
+
+.insta-locations-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.insta-location-story {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 80px;
+}
+
+.insta-location-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accentClr) 0%, #8b5cf6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  border: 3px solid var(--bgclr);
+  box-shadow: 0 0 0 2px var(--accentClr);
+}
+
+.insta-location-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--textP);
+  text-align: center;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.insta-location-city {
+  font-size: 0.75rem;
+  color: var(--textS);
+}
+
+.insta-location-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.insta-location-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.insta-location-map-link {
+  color: var(--accentClr);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.insta-location-download {
+  background: rgba(0,0,0,0.04);
+  border: 1px solid rgba(128,128,128,0.08);
+  padding: 6px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.insta-location-download:hover { transform: translateY(-2px); }
+
+/* Verification Badge */
+.verify-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.verify-badge.verified {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.verify-badge.pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.verify-badge.rejected {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+/* Error State */
+.business-public-error {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  color: var(--textP);
+}
+
+.business-public-error .error-icon {
+  font-size: 5rem;
+  color: var(--textS);
+  opacity: 0.5;
+  margin-bottom: 1.5rem;
+}
+
+.business-public-error h2 {
+  font-size: 2rem;
+  margin: 0 0 0.5rem;
+}
+
+.business-public-error p {
+  color: var(--textS);
+  margin: 0 0 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .insta-profile-section {
+    padding: 1.5rem 1rem 1rem;
+  }
+  
+  .insta-profile-header {
+    gap: 1.5rem;
+  }
+  
+  .insta-avatar-inner {
+    width: 100px;
+    height: 100px;
+    font-size: 2.5rem;
+  }
+  
+  .insta-stats {
+    gap: 1.5rem;
+  }
+  
+  .insta-stat-number {
+    font-size: 1.25rem;
+  }
+  
+  .insta-grid {
+    gap: 2px;
+  }
+  
+  .insta-list-item {
+    flex-direction: column;
+  }
+  
+  .insta-list-image {
+    width: 100%;
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .insta-avatar-inner {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+  }
+  
+  .insta-stats {
+    gap: 1rem;
+  }
+  
+  .insta-stat-number {
+    font-size: 1.1rem;
+  }
+  
+  .insta-stat-label {
+    font-size: 0.8rem;
+  }
+  
+  .insta-actions {
+    flex-wrap: wrap;
+  }
+  
+  .insta-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Header Section */
+.business-header {
+  background: linear-gradient(135deg, var(--accentClr) 0%, #1e40af 100%);
+  padding: 3rem 2rem 4rem;
+  color: white;
+  position: relative;
+}
+
+.business-header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.btn-back-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.btn-back-nav:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateX(-4px);
+}
+
+.business-title-section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.business-icon {
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.business-name {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+}
+
+.business-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.verify-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.verify-badge.verified {
+  background: rgba(16, 185, 129, 0.9);
+  color: white;
+}
+
+.verify-badge.pending {
+  background: rgba(245, 158, 11, 0.9);
+  color: white;
+}
+
+.verify-badge.rejected {
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+}
+
+/* Content Wrapper */
+.business-content-wrapper {
+  max-width: 1200px;
+  margin: -2rem auto 0;
+  padding: 0 2rem 4rem;
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+/* Info Cards */
+.info-card {
+  background: var(--bgclr);
+  border: 1px solid rgba(128, 128, 128, 0.15);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.info-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--textP);
+  margin: 0 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Actions Card */
+.actions-card .contact-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.25rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-call {
+  background: #10b981;
+  color: white;
+}
+
+.btn-call:hover {
+  background: #059669;
+  transform: translateY(-2px);
+}
+
+.btn-email {
+  background: #f59e0b;
+  color: white;
+}
+
+.btn-email:hover {
+  background: #d97706;
+  transform: translateY(-2px);
+}
+
+.btn-chat {
+  background: var(--accentClr);
+  color: white;
+}
+
+.btn-chat:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+}
+
+/* Contact List */
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.contact-icon {
+  font-size: 1.25rem;
+  color: var(--accentClr);
+  margin-top: 0.1rem;
+}
+
+.contact-item > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-label {
+  font-size: 0.8rem;
+  color: var(--textS);
+  font-weight: 500;
+}
+
+.contact-value {
+  font-size: 0.95rem;
+  color: var(--textP);
+  font-weight: 500;
+}
+
+/* Regions */
+.regions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.region-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.8rem;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: var(--accentClr);
+  font-weight: 500;
+}
+
+/* License Card */
+.license-card {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(147, 51, 234, 0.05) 100%);
+}
+
+.license-number {
+  font-family: monospace;
+  font-size: 0.95rem;
+  color: var(--textP);
+  margin: 0 0 0.75rem;
+}
+
+.license-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--accentClr);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.license-link:hover {
+  text-decoration: underline;
+}
+
+/* Main Column */
+.business-main-column {
+  background: var(--bgclr);
+  border: 1px solid rgba(128, 128, 128, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* Tabs */
+.business-tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+  background: rgba(128, 128, 128, 0.03);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 1.25rem 1.5rem;
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--textS);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tab-btn:hover {
+  color: var(--textP);
+  background: rgba(128, 128, 128, 0.05);
+}
+
+.tab-btn.active {
+  color: var(--accentClr);
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accentClr);
+}
+
+/* Tab Content */
+.tab-content {
+  padding: 2rem;
+}
+
+/* About Section */
+.about-section h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--textP);
+  margin: 0 0 1rem;
+}
+
+.business-description {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--textS);
+  margin: 0 0 2rem;
+}
+
+.business-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.stat-box {
+  text-align: center;
+  padding: 1.5rem;
+  background: rgba(128, 128, 128, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(128, 128, 128, 0.1);
+}
+
+.stat-number {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accentClr);
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--textS);
+  font-weight: 500;
+}
+
+/* Services Section */
+.services-section h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--textP);
+  margin: 0 0 1.5rem;
+}
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.post-card {
+  background: rgba(128, 128, 128, 0.03);
+  border: 1px solid rgba(128, 128, 128, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.post-image {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+}
+
+.post-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.post-card:hover .post-image img {
+  transform: scale(1.05);
+}
+
+.post-content {
+  padding: 1.25rem;
+}
+
+.post-content h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--textP);
+  margin: 0 0 0.5rem;
+}
+
+.post-content p {
+  font-size: 0.9rem;
+  color: var(--textS);
+  line-height: 1.5;
+  margin: 0 0 0.75rem;
+}
+
+.offer-badge {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.post-location {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--textS);
+}
+
+.empty-posts {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--textS);
+}
+
+.empty-posts .empty-icon {
+  font-size: 4rem;
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+
+/* Locations Section */
+.locations-section h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--textP);
+  margin: 0 0 1.5rem;
+}
+
+.locations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.location-card {
+  padding: 1.5rem;
+  background: rgba(128, 128, 128, 0.03);
+  border: 1px solid rgba(128, 128, 128, 0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.location-card:hover {
+  border-color: var(--accentClr);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.location-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.location-icon {
+  font-size: 1.25rem;
+  color: var(--accentClr);
+}
+
+.location-header h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--textP);
+  margin: 0;
+}
+
+.location-address {
+  font-size: 0.95rem;
+  color: var(--textS);
+  margin: 0 0 0.25rem;
+}
+
+.location-region {
+  font-size: 0.85rem;
+  color: var(--textS);
+  opacity: 0.8;
+  margin: 0 0 0.75rem;
+}
+
+.map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--accentClr);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.map-link:hover {
+  text-decoration: underline;
+}
+
+.empty-locations {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--textS);
+}
+
+.empty-locations .empty-icon {
+  font-size: 4rem;
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+
+/* Error State */
+.business-public-error {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  color: var(--textP);
+}
+
+.business-public-error .error-icon {
+  font-size: 5rem;
+  color: var(--textS);
+  opacity: 0.5;
+  margin-bottom: 1.5rem;
+}
+
+.business-public-error h2 {
+  font-size: 2rem;
+  margin: 0 0 0.5rem;
+}
+
+.business-public-error p {
+  color: var(--textS);
+  margin: 0 0 1.5rem;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.5rem;
+  background: var(--accentClr);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .business-content-wrapper {
+    grid-template-columns: 300px 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .business-header {
+    padding: 2rem 1.5rem 3rem;
+  }
+  
+  .business-title-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .business-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+  
+  .business-name {
+    font-size: 1.75rem;
+  }
+  
+  .business-meta {
+    justify-content: center;
+  }
+  
+  .business-content-wrapper {
+    grid-template-columns: 1fr;
+    padding: 0 1rem 2rem;
+    margin-top: -1rem;
+  }
+  
+  .business-info-column {
+    order: 2;
+  }
+  
+  .business-main-column {
+    order: 1;
+  }
+  
+  .business-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .posts-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tab-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .business-name {
+    font-size: 1.5rem;
+  }
+  
+  .business-tabs {
+    flex-wrap: wrap;
+  }
+  
+  .tab-btn {
+    flex: 1 1 100%;
+    padding: 1rem;
+  }
+  
+  .business-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-actions {
+    gap: 0.5rem;
+  }
+  
+  .btn-action {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+}

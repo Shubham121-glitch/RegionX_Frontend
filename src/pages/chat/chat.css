@@ -1,0 +1,336 @@
+/* ======================================================
+   ERROR HANDLING
+   ====================================================== */
+
+.chat-error-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 2rem;
+  background: var(--bg-main);
+  text-align: center;
+}
+
+.error-content {
+  background: var(--bg-surface);
+  padding: 2rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  max-width: 500px;
+  width: 100%;
+}
+
+.error-content h3 {
+  margin: 0 0 1rem 0;
+  color: var(--danger);
+  font-size: 1.5rem;
+}
+
+.error-content p {
+  margin: 0 0 1.5rem 0;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+
+.error-details {
+  background: var(--bg-elevated);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  margin: 1rem 0;
+  text-align: left;
+}
+
+.error-details p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.back-btn, .retry-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.back-btn {
+  background: var(--text-secondary);
+  color: var(--bg-surface);
+}
+
+.back-btn:hover {
+  background: var(--text-primary);
+}
+
+.retry-btn {
+  background: var(--accent-primary);
+  color: var(--bg-surface);
+}
+
+.retry-btn:hover {
+  background: var(--accent-hover);
+}
+
+/* ======================================================
+   CHAT APPLICATION — THEME ARCHITECTURE
+   Fully controlled via CSS variables
+   ====================================================== */
+
+/* ================= LIGHT THEME ================= */
+
+:root {
+  /* Background */
+  --bg-main: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-elevated: #f1f5f9;
+
+  /* Text */
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+
+  /* Borders */
+  --border-soft: #e2e8f0;
+
+  /* Accent */
+  --accent-primary: #0891b2;
+  --accent-hover: #06b6d4;
+
+  /* Status */
+  --success: #16a34a;
+  --danger: #dc2626;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* Scrollbar */
+  --scrollbar: #cbd5e1;
+
+  /* Radius */
+  --radius-md: 0.75rem;
+}
+
+/* ================= DARK THEME ================= */
+
+[data-theme="dark"] {
+  --bg-main: #0f172a;
+  --bg-surface: #1e293b;
+  --bg-elevated: #273449;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+
+  --border-soft: #334155;
+
+  --accent-primary: #06b6d4;
+  --accent-hover: #22d3ee;
+
+  --scrollbar: #475569;
+}
+
+/* ======================================================
+   GLOBAL RESET
+   ====================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg-main);
+  color: var(--text-primary);
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+/* ======================================================
+   MAIN LAYOUT
+   ====================================================== */
+
+.chat-app {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  background: var(--bg-main);
+}
+
+/* ======================================================
+   HEADER
+   ====================================================== */
+
+.chat-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  padding: 1rem 1.5rem;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ======================================================
+   MESSAGE AREA
+   ====================================================== */
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Scrollbar */
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: var(--scrollbar);
+  border-radius: 999px;
+}
+
+/* ======================================================
+   MESSAGE BUBBLES
+   ====================================================== */
+
+.message {
+  max-width: 70%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+/* Received Message */
+.message.received {
+  align-self: flex-start;
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+/* Sent Message */
+.message.sent {
+  align-self: flex-end;
+  background: var(--accent-primary);
+  color: var(--bg-surface);
+}
+
+/* ======================================================
+   SEEN INDICATOR
+   ====================================================== */
+
+.seen-indicator {
+  font-size: 0.7rem;
+  margin-top: 0.25rem;
+  color: var(--text-secondary);
+  transition: color 0.25s ease;
+}
+
+.seen-indicator.seen {
+  color: var(--success);
+}
+
+/* ======================================================
+   INPUT SECTION
+   ====================================================== */
+
+.chat-input-container {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+
+  padding: 1rem 1.5rem;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-sm);
+}
+
+.chat-input-wrapper {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-soft);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+/* Send Button */
+.button-primary {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+
+  background: var(--accent-primary);
+  color: var(--bg-surface);
+
+  transition: background 0.2s ease;
+}
+
+.button-primary:hover {
+  background: var(--accent-hover);
+}
+
+/* ======================================================
+   RESPONSIVE
+   ====================================================== */
+
+@media (max-width: 640px) {
+  .chat-messages {
+    padding: 1rem;
+  }
+
+  .chat-header,
+  .chat-input-container {
+    padding: 0.75rem 1rem;
+  }
+
+  .message {
+    max-width: 85%;
+  }
+}

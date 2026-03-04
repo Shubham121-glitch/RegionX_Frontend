@@ -1,0 +1,172 @@
+/* Cinematic Video Background Styles */
+.video-background-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* Video Element */
+.video-background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.video-background.loaded,
+.video-background-container.loaded .video-background {
+  opacity: 1;
+}
+
+.video-background.transitioning {
+  opacity: 0.3;
+}
+
+/* Zoom Effect (Cinematic) */
+.video-background-container.zoom-effect .video-background {
+  animation: cinematicZoom 30s ease-in-out infinite alternate;
+}
+
+@keyframes cinematicZoom {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+/* Overlay */
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Loading State */
+.video-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bgclr);
+  z-index: 2;
+}
+
+.video-loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--accentClr);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Fade In Animation */
+@keyframes fadeInVideo {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Crossfade Transition for Theme Switching */
+.video-background-container::before,
+.video-background-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.5s ease-in-out;
+  pointer-events: none;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .video-background {
+    /* Reduce quality on mobile - handled by component logic */
+  }
+  
+  .video-background-container.zoom-effect .video-background {
+    animation: none; /* Disable zoom on mobile for performance */
+  }
+  
+  .video-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border-width: 2px;
+  }
+}
+
+/* Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+  .video-background-container.zoom-effect .video-background {
+    animation: none;
+  }
+  
+  .video-background {
+    transition: none;
+  }
+}
+
+/* High Resolution Screens */
+@media (min-width: 2560px) {
+  .video-background {
+    /* Ensure 4K quality on large screens */
+    min-width: 100vw;
+    min-height: 100vh;
+  }
+}
+
+/* Video Poster Fallback */
+.video-background[poster] {
+  background-size: cover;
+  background-position: center;
+}
+
+/* Smooth Theme Transition Overlay */
+.theme-transition-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bgclr);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 3;
+}
+
+.theme-transition-overlay.active {
+  opacity: 0.5;
+}

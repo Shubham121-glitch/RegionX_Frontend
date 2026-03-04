@@ -1,0 +1,231 @@
+/* Review Form Styles */
+.review-form-container {
+  background: var(--bgclr);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.review-form-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--textP);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.sign-in-prompt {
+  text-align: center;
+  padding: 2rem;
+  color: var(--textS);
+  font-size: 1.1rem;
+}
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.review-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--textP);
+  font-size: 0.95rem;
+}
+
+.form-group textarea {
+  padding: 1rem;
+  border: 2px solid rgba(128, 128, 128, 0.3);
+  border-radius: 12px;
+  background: var(--bgclr);
+  color: var(--textP);
+  font-size: 1rem;
+  resize: vertical;
+  min-height: 120px;
+  transition: all 0.3s ease;
+}
+
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accentClr);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group textarea::placeholder {
+  color: var(--textS);
+  opacity: 0.6;
+}
+
+/* Media Upload */
+.media-upload-group {
+  margin-top: 0.5rem;
+}
+
+.media-uploads {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.media-upload-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.media-upload-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(128, 128, 128, 0.1);
+  border: 2px dashed rgba(128, 128, 128, 0.3);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--textS);
+  font-weight: 500;
+}
+
+.media-upload-btn:hover {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: var(--accentClr);
+  color: var(--accentClr);
+  transform: translateY(-2px);
+}
+
+.media-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(34, 197, 94, 0.1);
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.media-name {
+  color: var(--textP);
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove-media {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.remove-media:hover {
+  transform: scale(1.1);
+}
+
+/* Submit Button */
+.submit-review-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background: var(--accentClr);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-review-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.submit-review-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.submit-review-btn.loading {
+  pointer-events: none;
+}
+
+/* Spinner Animation */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Ripple Effect */
+.submit-review-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.submit-review-btn:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .review-form-container {
+    padding: 1.5rem;
+  }
+
+  .media-uploads {
+    flex-direction: column;
+  }
+
+  .submit-review-btn {
+    width: 100%;
+  }
+}
