@@ -93,7 +93,7 @@ function Home() {
       
       <div className="hero-section">
         <div className="hero-content">
-          <h1 className="hero-logo">RegionX</h1>
+          <h1 className="hero-logo">RegionX - Test</h1>
           <p className="hero-tagline">See More. Feel More. Be More.</p>
           
           <div className="hero-buttons">
