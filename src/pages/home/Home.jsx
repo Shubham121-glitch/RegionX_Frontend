@@ -1,19 +1,18 @@
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/clerk-react';
-import { IoEarthSharp } from "react-icons/io5";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loading from '../../components/loading/Loading';
-import homeVideo from '../../assets/homebgvideo.mp4';
+import homeVideo from '../../assets/bg.mp4';
 import './home.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-// const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-
 function Home() {
+
   const { user, isSignedIn, isLoaded } = useUser();
   const navigate = useNavigate();
+
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
   const [videoLoaded, setVideoLoaded] = useState(false);
 
@@ -21,17 +20,16 @@ function Home() {
     const handleThemeChange = () => {
       setTheme(localStorage.getItem('theme') || 'dark');
     };
-    
+
     window.addEventListener('storage', handleThemeChange);
-    
-    // Check theme periodically since localStorage changes don't trigger storage event in same tab
+
     const interval = setInterval(() => {
       const currentTheme = localStorage.getItem('theme') || 'dark';
       if (currentTheme !== theme) {
         setTheme(currentTheme);
       }
     }, 100);
-    
+
     return () => {
       window.removeEventListener('storage', handleThemeChange);
       clearInterval(interval);
@@ -48,20 +46,9 @@ function Home() {
   };
 
   useEffect(() => {
-    if (!isLoaded || !user) {
-      console.log('[Home] Waiting - isLoaded:', isLoaded, 'user:', !!user);
-      return;
-    }
 
-    console.log('[Home] User loaded:', user.id);
-    console.log('[Home] createdAt:', user.createdAt);
-    console.log('[Home] updatedAt:', user.updatedAt);
+    if (!isLoaded || !user) return;
 
-    const isNewUser = user.createdAt === user.updatedAt;
-    console.log('[Home] isNewUser:', isNewUser);
-
-    // Always sync user to backend (backend will check if exists)
-    console.log('[Home] Sending user to backend...');
     sendUserToBackend({
       id: user.id,
       email: user.primaryEmailAddress?.emailAddress || '',
@@ -69,42 +56,80 @@ function Home() {
       lastName: user.lastName || '',
       profileImage: user.imageUrl || ''
     });
+
   }, [isLoaded, user]);
 
   if (!isLoaded) return <Loading />;
 
   return (
-    <div className={`home-container ${theme}`}>
-      {/* Background Video */}
-      <video
-        className={`home-video ${videoLoaded ? 'show' : 'hide'}`}
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-        key="home-video"
-        onLoadedData={() => setVideoLoaded(true)}
-      >
-        <source src={homeVideo} type="video/mp4" />
-      </video>
-      
-      <div className="home-overlay"></div>
-      
-      <div className="hero-section">
-        <div className="hero-content">
-          <h1 className="hero-logo">RegionX - Test</h1>
-          <p className="hero-tagline">See More. Feel More. Be More.</p>
-          
-          <div className="hero-buttons">
-            <SignedOut>
-              <button className="btn btn-outline" onClick={() => navigate('/sign-in')}>Sign In</button>
-              <button className="btn btn-primary" onClick={() => navigate('/sign-up')}>Get Started</button>
-            </SignedOut>
-          </div>
+
+    <div className={`container ${theme}`}>
+
+      {/* LEFT SIDE - Diagonal Background */}
+      <div className="left"></div>
+
+      {/* HERO CONTENT - Overlays Both Diagonals */}
+      <div className="hero-content">
+        <div className="logo">
+          🌍 <span>RegionX</span>
+        </div>
+
+        <h1>
+          Discover Hidden <br />
+          Places Across Regions
+        </h1>
+
+        <p>
+          Explore local services, watch travel shorts, connect with guides
+          and experience destinations like never before.
+        </p>
+
+        <div className="buttons">
+
+          <SignedOut>
+            <button
+              className="btn-outline"
+              onClick={() => navigate('/sign-in')}
+            >
+              Sign In
+            </button>
+
+            <button
+              className="btn-primary"
+              onClick={() => navigate('/sign-up')}
+            >
+              Get Started
+            </button>
+          </SignedOut>
+
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+
         </div>
       </div>
+
+      {/* RIGHT SIDE - Diagonal Video */}
+
+      <div className="right">
+
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className={`bg-video ${videoLoaded ? 'show' : 'hide'}`}
+          onLoadedData={() => setVideoLoaded(true)}
+        >
+          <source src={homeVideo} type="video/mp4" />
+        </video>
+
+        <div className="video-overlay"></div>
+
+      </div>
+
     </div>
+
   );
 }
 
