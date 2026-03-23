@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import NavBar from './navigation/Navbar';
+import Sidebar from './navigation/Sidebar';
 import BackButton from './BackButton';
 import './layout.css';
 
@@ -12,11 +12,14 @@ const Layout = ({ children }) => {
 
   return (
     <div className="app-layout">
-      <NavBar />
-      
-      {shouldShowBackButton && <BackButton />}
+      <Sidebar />
       
       <main className={`page-content ${shouldShowBackButton ? 'with-back-btn' : ''}`}>
+        {shouldShowBackButton && (
+          <div className="back-btn-container">
+            <BackButton />
+          </div>
+        )}
         {children}
       </main>
     </div>

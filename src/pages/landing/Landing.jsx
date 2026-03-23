@@ -1,11 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiSearch, FiMapPin, FiArrowDown, FiStar } from 'react-icons/fi';
+import { FiMapPin, FiStar, FiSearch, FiArrowRight } from 'react-icons/fi';
 import axios from 'axios';
-import { useScrollAnimation } from '../../hooks/useScrollAnimation';
-import Loading from '../../components/loading/Loading';
 import StarRating from '../../components/reviews/StarRating';
-import landingVideo from '../../assets/landingbgvideo.mp4';
+import Loading from '../../components/loading/Loading';
 import './landing.css';
 
 const monthlyRecommendations = {
@@ -75,22 +73,18 @@ const monthlyRecommendations = {
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
 
+const monthNames = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
 function Landing() {
   const navigate = useNavigate();
-  const regionSectionRef = useRef(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentMonth] = useState(new Date().getMonth());
   const [recommendations, setRecommendations] = useState([]);
   const [regions, setRegions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-
-  // Scroll animations with direction
-  const { ref: titleRef, isVisible: titleVisible, scrollDirection: titleDir } = useScrollAnimation();
-  const { ref: searchRef, isVisible: searchVisible, scrollDirection: searchDir } = useScrollAnimation();
-  const { ref: regionsRef, isVisible: regionsVisible, scrollDirection: regionsDir } = useScrollAnimation();
-  const { ref: recTitleRef, isVisible: recTitleVisible, scrollDirection: recTitleDir } = useScrollAnimation();
-  const { ref: recGridRef, isVisible: recGridVisible, scrollDirection: recGridDir } = useScrollAnimation();
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Fetch regions from backend
   useEffect(() => {
@@ -112,164 +106,116 @@ function Landing() {
     setRecommendations(monthlyRecommendations[currentMonth] || []);
   }, [currentMonth]);
 
-  const filteredRegions = regions.filter(region =>
-    ((region.regionName || '').toLowerCase().includes((searchQuery || '').toLowerCase())) ||
-    ((region.shortDescription || '').toLowerCase().includes((searchQuery || '').toLowerCase()))
-  );
-
-  const scrollToRegions = () => {
-    regionSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   const handleRegionClick = (regionId) => {
     navigate(`/region/${regionId}`);
   };
 
-  const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
+  const filteredRegions = regions.filter(region =>
+    (region.regionName || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (region.shortDescription || '').toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <div className="landing-container">
-      {/* Hero Section with Video Background */}
-      <section className="hero-section">
-        <video
-          className={`hero-video ${videoLoaded ? 'show' : 'hide'}`}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          key="landing-video"
-          onLoadedData={() => setVideoLoaded(true)}
-        >
-          <source src={landingVideo} type="video/mp4" />
-        </video>
-        <div className="hero-overlay"></div>
-        <div className="hero-content">
-          <h1 className="hero-title">Discover Your Next Destination</h1>
-          <p className="hero-subtitle">
-            Explore regions around the world and start your journey.
-          </p>
-          <button className="hero-btn" onClick={scrollToRegions}>
-            Explore Regions
-            <FiArrowDown className="hero-btn-icon" />
-          </button>
+    <div className="landing-dashboard">
+      <div className="dashboard-header">
+        <div className="dashboard-title-area">
+          <h1 className="dashboard-title">Explore Regions</h1>
+          <p className="dashboard-subtitle">Discover amazing destinations around the world.</p>
+        </div>
+        
+        <div className="dashboard-search">
+          <FiSearch className="search-icon" />
+          <input 
+            type="text" 
+            placeholder="Search regions, cities..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+      </div>
+
+      {/* Featured/Recommendations Section */}
+      <section className="dashboard-section" id="explore">
+        <div className="section-header">
+          <h2 className="section-title">Top picks for {monthNames[currentMonth]}</h2>
+        </div>
+        
+        <div className="recommendations-card-grid">
+          {recommendations.map((rec, idx) => (
+            <div className="rec-card" key={idx}>
+              <div className="rec-image-wrapper">
+                <img src={rec.image} alt={rec.name} className="rec-image" />
+                <div className="rec-overlay">
+                  <span className="rec-badge">Featured</span>
+                </div>
+              </div>
+              <div className="rec-info">
+                <h3>{rec.name}</h3>
+                <p>{rec.reason}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Region Selection Section */}
-      <section className="regions-section" ref={regionSectionRef}>
-        <div className="container">
-          <h2 
-            className={`section-title scroll-animate ${titleVisible ? `visible ${titleDir}` : ''}`}
-            ref={titleRef}
-          >
-            Choose Your Region
-          </h2>
-          
-          {/* Search Bar */}
-          <div 
-            className={`search-container scroll-animate ${searchVisible ? `visible ${searchDir}` : ''}`}
-            ref={searchRef}
-          >
-            <div className="search-wrapper">
-              <FiSearch className="search-icon" />
-              <input
-                type="text"
-                className="search-input"
-                placeholder="Search region..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-          </div>
+      {/* Regions Grid Section */}
+      <section className="dashboard-section">
+        <div className="section-header">
+          <h2 className="section-title">All Regions</h2>
+        </div>
 
-          {/* Region Grid */}
-          <div 
-            className={`regions-grid scroll-animate ${regionsVisible ? `visible ${regionsDir}` : ''}`}
-            ref={regionsRef}
-          >
-            {loading ? (
-              <Loading />
-            ) : (
-              filteredRegions.map((region, index) => (
-                <div
-                  key={region._id}
-                  className="region-card"
-                  style={{ animationDelay: `${index * 0.1}s` }}
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            <div className="regions-card-grid">
+              {filteredRegions.map((region) => (
+                <div 
+                  key={region._id} 
+                  className="region-modern-card"
                   onClick={() => handleRegionClick(region._id)}
                 >
-                  <div className="region-image-wrapper">
-                    <img
-                      src={`${BASE_URL}${region.thumbnail}`}
-                      alt={region.regionName}
-                      className="region-image"
-                      loading="lazy"
-                    />
-                    <div className="region-overlay">
-                      <FiMapPin className="region-icon" />
+                  <div className="region-img-container">
+                    <img src={`${BASE_URL}${region.thumbnail}`} alt={region.regionName} loading="lazy" />
+                    
+                    <div className="region-overlay-actions">
+                      <button className="overlay-btn favorite"><FiHeart /></button>
                     </div>
-                    {/* Rating Badge */}
+
                     {region.totalReviews > 0 && (
-                      <div className="region-rating-badge">
-                        <StarRating rating={region.averageRating} totalReviews={region.totalReviews} showCount={true} />
+                      <div className="region-rating-pill">
+                        <FiStar className="star-icon" />
+                        <span>{parseFloat(region.averageRating).toFixed(1)}</span>
+                        <span className="review-count">({region.totalReviews})</span>
                       </div>
                     )}
                   </div>
-                  <div className="region-info">
-                    <h3 className="region-name">{region.regionName}</h3>
-                    <p className="region-description">{region.shortDescription}</p>
+
+                  <div className="region-card-content">
+                    <div className="region-meta">
+                      <span className="region-tag"><FiMapPin size={12}/> {region.regionName}</span>
+                    </div>
+                    <h3 className="region-card-title">{region.regionName}</h3>
+                    <p className="region-card-desc">{region.shortDescription}</p>
+                    
+                    <div className="region-card-footer">
+                      <span className="explore-text">Explore now</span>
+                      <FiArrowRight className="arrow-icon" />
+                    </div>
                   </div>
                 </div>
-              ))
-            )}
-          </div>
-
-          {filteredRegions.length === 0 && (
-            <div className="no-results">
-              <p>No regions found matching "{searchQuery}"</p>
+              ))}
             </div>
-          )}
-        </div>
-      </section>
 
-      {/* Monthly Recommendations */}
-      <section className="recommendations-section">
-        <div className="container">
-          <h2 
-            className={`section-title scroll-animate ${recTitleVisible ? `visible ${recTitleDir}` : ''}`}
-            ref={recTitleRef}
-          >
-            Recommended Destinations for {monthNames[currentMonth]}
-          </h2>
-          <div 
-            className={`recommendations-grid scroll-animate ${recGridVisible ? `visible ${recGridDir}` : ''}`}
-            ref={recGridRef}
-          >
-            {recommendations.map((rec, index) => (
-              <div 
-                key={index} 
-                className="recommendation-card"
-                style={{ animationDelay: `${index * 0.15}s` }}
-              >
-                <div className="recommendation-image-wrapper">
-                  <img
-                    src={rec.image}
-                    alt={rec.name}
-                    className="recommendation-image"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="recommendation-info">
-                  <h3 className="recommendation-name">{rec.name}</h3>
-                  <p className="recommendation-reason">{rec.reason}</p>
-                </div>
+            {filteredRegions.length === 0 && (
+              <div className="empty-state">
+                <div className="empty-icon"><FiSearch size={32} /></div>
+                <h3>No regions found</h3>
+                <p>We couldn't find any regions matching "{searchQuery}". Try a different search term.</p>
               </div>
-            ))}
-          </div>
-        </div>
+            )}
+          </>
+        )}
       </section>
     </div>
   );

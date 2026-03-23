@@ -181,6 +181,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -208,13 +209,29 @@
   animation: typing 1.4s infinite ease-in-out;
 }
 
-.saaz-typing-dot:nth-child(1) { animation-delay: 0s; }
-.saaz-typing-dot:nth-child(2) { animation-delay: 0.2s; }
-.saaz-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+.saaz-typing-dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.saaz-typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.saaz-typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
 
 @keyframes typing {
-  0%, 60%, 100% { transform: translateY(0); }
-  30% { transform: translateY(-5px); }
+
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+
+  30% {
+    transform: translateY(-5px);
+  }
 }
 
 /* Input area */
@@ -243,7 +260,8 @@
   box-shadow: 0 0 10px rgba(100, 130, 255, 0.2);
 }
 
-.saaz-voice-btn, .saaz-send-btn {
+.saaz-voice-btn,
+.saaz-send-btn {
   width: 45px;
   height: 45px;
   border: none;
@@ -270,14 +288,23 @@
   color: white;
 }
 
-.saaz-voice-btn:hover, .saaz-send-btn:hover {
+.saaz-voice-btn:hover,
+.saaz-send-btn:hover {
   transform: scale(1.1);
 }
 
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
-  70% { box-shadow: 0 0 0 10px rgba(255, 107, 107, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+  }
 }
 
 @keyframes fadeInScale {
@@ -285,6 +312,7 @@
     opacity: 0;
     transform: scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -292,13 +320,23 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes voiceWaveWake {
-  0% { height: 20px; }
-  100% { height: 60px; }
+  0% {
+    height: 20px;
+  }
+
+  100% {
+    height: 60px;
+  }
 }
 
 /* Voice activation overlay */
@@ -394,10 +432,21 @@
   animation: voiceWave 1.5s infinite ease-in-out;
 }
 
-.saaz-voice-bar:nth-child(2) { animation-delay: 0.2s; }
-.saaz-voice-bar:nth-child(3) { animation-delay: 0.4s; }
-.saaz-voice-bar:nth-child(4) { animation-delay: 0.6s; }
-.saaz-voice-bar:nth-child(5) { animation-delay: 0.8s; }
+.saaz-voice-bar:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.saaz-voice-bar:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.saaz-voice-bar:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+.saaz-voice-bar:nth-child(5) {
+  animation-delay: 0.8s;
+}
 
 .saaz-voice-bar.wake-detected {
   background: linear-gradient(to top, #ff6b6b, #ffa500);
@@ -485,8 +534,15 @@
 }
 
 @keyframes voiceWave {
-  0%, 100% { height: 20px; }
-  50% { height: 50px; }
+
+  0%,
+  100% {
+    height: 20px;
+  }
+
+  50% {
+    height: 50px;
+  }
 }
 
 /* Modal styles for all components */
@@ -507,8 +563,13 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .saaz-modal-content {
@@ -525,8 +586,15 @@
 }
 
 @keyframes slideIn {
-  from { transform: translateY(-50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .saaz-modal-header {
@@ -564,8 +632,12 @@
 }
 
 /* Specific component styles */
-.saaz-emergency-content, .saaz-budget-calculator-content, .saaz-translator-content, 
-.saaz-religious-places-content, .saaz-all-day-plan-content, .saaz-trip-plan-content {
+.saaz-emergency-content,
+.saaz-budget-calculator-content,
+.saaz-translator-content,
+.saaz-religious-places-content,
+.saaz-all-day-plan-content,
+.saaz-trip-plan-content {
   padding: 20px;
 }
 
@@ -663,7 +735,8 @@
   margin-bottom: 20px;
 }
 
-.saaz-source-textarea, .saaz-target-textarea {
+.saaz-source-textarea,
+.saaz-target-textarea {
   width: 100%;
   min-height: 100px;
   padding: 15px;
@@ -688,7 +761,9 @@
   gap: 10px;
 }
 
-.saaz-translate-btn, .saaz-clear-btn, .saaz-swap-btn {
+.saaz-translate-btn,
+.saaz-clear-btn,
+.saaz-swap-btn {
   padding: 10px 20px;
   border: none;
   border-radius: 10px;
@@ -738,10 +813,21 @@
   font-weight: bold;
 }
 
-.saaz-temple { background: rgba(139, 69, 19, 0.3); }
-.saaz-church { background: rgba(75, 0, 130, 0.3); }
-.saaz-mosque { background: rgba(34, 139, 34, 0.3); }
-.saaz-gurdwara { background: rgba(255, 215, 0, 0.3); }
+.saaz-temple {
+  background: rgba(139, 69, 19, 0.3);
+}
+
+.saaz-church {
+  background: rgba(75, 0, 130, 0.3);
+}
+
+.saaz-mosque {
+  background: rgba(34, 139, 34, 0.3);
+}
+
+.saaz-gurdwara {
+  background: rgba(255, 215, 0, 0.3);
+}
 
 .saaz-place-actions {
   display: flex;
@@ -749,7 +835,8 @@
   margin-top: 10px;
 }
 
-.saaz-directions-btn, .saaz-favorite-btn {
+.saaz-directions-btn,
+.saaz-favorite-btn {
   padding: 8px 15px;
   border: none;
   border-radius: 10px;
@@ -771,15 +858,17 @@
 }
 
 .saaz-download-btn {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   padding: 6px 10px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 700;
 }
 
-.saaz-download-btn:hover { transform: translateY(-2px); }
+.saaz-download-btn:hover {
+  transform: translateY(-2px);
+}
 
 /* All-day plan styles */
 .saaz-input-group {
@@ -995,6 +1084,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1005,13 +1095,33 @@
   animation: fadeInUpTrip 0.5s ease forwards;
 }
 
-.saaz-trip-day:nth-child(1) { animation-delay: 0.1s; }
-.saaz-trip-day:nth-child(2) { animation-delay: 0.2s; }
-.saaz-trip-day:nth-child(3) { animation-delay: 0.3s; }
-.saaz-trip-day:nth-child(4) { animation-delay: 0.4s; }
-.saaz-trip-day:nth-child(5) { animation-delay: 0.5s; }
-.saaz-trip-day:nth-child(6) { animation-delay: 0.6s; }
-.saaz-trip-day:nth-child(7) { animation-delay: 0.7s; }
+.saaz-trip-day:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.saaz-trip-day:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.saaz-trip-day:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.saaz-trip-day:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.saaz-trip-day:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.saaz-trip-day:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+.saaz-trip-day:nth-child(7) {
+  animation-delay: 0.7s;
+}
 
 /* Responsive design */
 @media (max-width: 768px) {
@@ -1022,16 +1132,16 @@
     right: 20px;
     left: 20px;
   }
-  
+
   .saaz-modal-content {
     width: calc(100% - 40px);
     max-height: 90vh;
   }
-  
+
   .saaz-quick-actions {
     justify-content: center;
   }
-  
+
   .saaz-emergency-contact {
     flex-direction: column;
     align-items: flex-start;
@@ -1043,24 +1153,24 @@
   .saaz-trip-plan-content {
     padding: 15px;
   }
-  
+
   .saaz-trip-summary {
     padding: 15px;
   }
-  
+
   .saaz-trip-day {
     padding: 20px;
   }
-  
+
   .saaz-day-details {
     grid-template-columns: 1fr;
     gap: 15px;
   }
-  
+
   .saaz-trip-day h3 {
     font-size: 20px;
   }
-  
+
   .saaz-day-activities h4,
   .saaz-day-food h4,
   .saaz-day-budget h4 {
@@ -1128,19 +1238,32 @@
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 /* Lists and general elements */
-.saaz-emergency-tips ul, .saaz-budget-tips ul, .saaz-translation-tips ul, 
-.saaz-religious-tips ul, .saaz-planning-tips ul {
+.saaz-emergency-tips ul,
+.saaz-budget-tips ul,
+.saaz-translation-tips ul,
+.saaz-religious-tips ul,
+.saaz-planning-tips ul {
   padding-left: 20px;
   color: #cbd5e1;
 }
 
-.saaz-emergency-tips li, .saaz-budget-tips li, .saaz-translation-tips li, 
-.saaz-religious-tips li, .saaz-planning-tips li {
+.saaz-emergency-tips li,
+.saaz-budget-tips li,
+.saaz-translation-tips li,
+.saaz-religious-tips li,
+.saaz-planning-tips li {
   margin-bottom: 8px;
 }
 

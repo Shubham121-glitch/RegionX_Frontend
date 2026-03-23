@@ -16,7 +16,6 @@ import CreateBusinessPost from './pages/business/CreateBusinessPost';
 import BusinessProfilePublic from './pages/business/BusinessProfilePublic';
 import Services from './pages/services/Services';
 import ChatPage from './pages/chat/ChatPage';
-import SaazWidget from './components/ai-chatbot/SaazWidget';
 import './styles/saaz-chatbot.css';
 
 const App = () => {
@@ -53,9 +52,6 @@ const App = () => {
         </Route>
 
       </Routes>
-      
-      {/* Saaz AI Chatbot Widget - available throughout the app */}
-      <SaazWidget />
     </>
   )
 }

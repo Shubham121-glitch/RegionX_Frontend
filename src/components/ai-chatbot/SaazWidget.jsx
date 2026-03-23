@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import SaazChatWindow from './SaazChatWindow';
+import './sazWidget.css';
 
 const SaazWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +14,7 @@ const SaazWidget = () => {
     setIsOpen(false);
   };
 
-  // Simulate AI being active/working
+  // Simulate AI activity
   useEffect(() => {
     const interval = setInterval(() => {
       setIsActive(prev => !prev);
@@ -30,7 +31,18 @@ const SaazWidget = () => {
           onClick={toggleChat}
           title="Talk to Saaz AI Assistant"
         >
-          <span className="saaz-orb-icon">🤖</span>
+          <span className="saaz-orb-icon">
+            {/* 🔥 Modern SVG AI Icon */}
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+              <path 
+                d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3h-1v1a4 4 0 0 1-8 0v-1H7a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3h1V6a4 4 0 0 1 4-4z" 
+                stroke="white" 
+                strokeWidth="1.5"
+              />
+              <circle cx="9" cy="12" r="1" fill="white"/>
+              <circle cx="15" cy="12" r="1" fill="white"/>
+            </svg>
+          </span>
         </div>
       </div>
       

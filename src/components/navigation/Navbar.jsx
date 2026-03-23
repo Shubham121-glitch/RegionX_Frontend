@@ -2,17 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/clerk-react';
 import { useUser } from '@clerk/clerk-react';
 import { FiMoon, FiSun, FiUser, FiGrid } from 'react-icons/fi'
-import { FaBarsStaggered, FaComments } from 'react-icons/fa6'
+import { FaBarsStaggered, FaComments, FaRobot } from 'react-icons/fa6'
 import { FaXmark } from 'react-icons/fa6'
 import { IoEarthSharp } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
 import { useChatNotifications } from '../../hooks/useChatNotifications'
 import ChatNotificationBadge from '../ChatNotificationBadge'
+import SaazChatWindow from '../ai-chatbot/SaazChatWindow'
 import './navbar.css'
 
 const NavBar = () => {
   const [isMenuActive, setIsMenuActive] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const navigate = useNavigate();
   const { user } = useUser();
   const { unreadCount } = useChatNotifications(user?.id);
@@ -76,7 +78,9 @@ const NavBar = () => {
               <ChatNotificationBadge count={unreadCount} isVisible={unreadCount > 0} />
             </button>
           </SignedIn>
-          <a href="#ai-chat" className="nav-link-simple">AI Chat</a>
+          <a href="#ai-chat" className="nav-link-simple" onClick={(e) => { e.preventDefault(); setIsChatOpen(true); }}>
+            <FaRobot /> AI Chat
+          </a>
           
           <button className='theme-toggle' onClick={ToggleTheme}>
             {Theme === 'dark' ? <FiSun /> : <FiMoon />}
@@ -127,6 +131,12 @@ const NavBar = () => {
               <ChatNotificationBadge count={unreadCount} isVisible={unreadCount > 0} />
             </button>
           </SignedIn>
+          <button 
+            className="mobile-link mobile-nav-btn"
+            onClick={() => { setIsChatOpen(true); setIsMenuActive(false); }}
+          >
+            <FaRobot /> AI Chat
+          </button>
           <SignedOut>
             <SignInButton mode="modal">
               <button className='btn btn-ghost full-width'>Sign In</button>
@@ -137,6 +147,11 @@ const NavBar = () => {
           </SignedOut>
         </div>
       </nav>
+      
+      <SaazChatWindow 
+        isOpen={isChatOpen} 
+        onClose={() => setIsChatOpen(false)} 
+      />
     </header>
   )
 }

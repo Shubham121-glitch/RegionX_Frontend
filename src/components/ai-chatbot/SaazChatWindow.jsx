@@ -4,6 +4,7 @@ import SaazVoiceActivation from './SaazVoiceActivation';
 import textToSpeechService from '../ai-services/textToSpeech';
 import SaazUIComponents from './SaazUIComponents';
 import useSaazVoice from '../../hooks/useSaazVoice';
+import './SaazChatWindow.css';
 
 const SaazChatWindow = ({ isOpen, onClose }) => {
   // Callback for when wake word is detected

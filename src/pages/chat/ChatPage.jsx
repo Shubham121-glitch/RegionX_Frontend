@@ -10,7 +10,6 @@ import MessageBubble from '../../components/chat/MessageBubble';
 import TypingIndicator from '../../components/chat/TypingIndicator';
 import SeenIndicator from '../../components/chat/SeenIndicator';
 import './chatPage.css';
-import SaazWidget from '../../components/ai-chatbot/SaazWidget';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
@@ -442,9 +441,6 @@ function ChatPage() {
           )}
         </section>
       </div>
-      
-      {/* Saaz AI Chatbot Widget */}
-      <SaazWidget />
     </>
   );
 }
