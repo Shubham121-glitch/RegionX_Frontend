@@ -6,6 +6,7 @@ import './adminUpload.css';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 function AdminUpload() {
+  console.log('Current API_URL:', API_URL);
   const [formData, setFormData] = useState({
     regionName: '',
     shortDescription: '',
@@ -68,6 +69,49 @@ function AdminUpload() {
 
   const removePlace = (index) => {
     setPlaces(places.filter((_, i) => i !== index));
+  };
+
+  const handleAIAutofill = async () => {
+    if (!formData.regionName.trim()) {
+      setMessage({ type: 'error', text: 'Please enter a region name first.' });
+      return;
+    }
+
+    setLoading(true);
+    setMessage({ type: 'info', text: 'AI is gathering information...' });
+
+    try {
+      const response = await axios.post(`${API_URL}/ai/autofill-region`, {
+        regionName: formData.regionName
+      });
+
+      if (response.data.success) {
+        const aiData = response.data.data;
+        setFormData(prev => ({
+          ...prev,
+          shortDescription: aiData.shortDescription || prev.shortDescription,
+          detailedDescription: aiData.detailedDescription || prev.detailedDescription,
+          history: aiData.history || prev.history,
+          culturalValues: aiData.culturalValues || prev.culturalValues,
+          traditions: aiData.traditions || prev.traditions
+        }));
+
+        if (aiData.placesToVisit && Array.isArray(aiData.placesToVisit)) {
+          setPlaces(aiData.placesToVisit.map(p => ({
+            name: p.name,
+            description: p.description,
+            image: null
+          })));
+        }
+
+        setMessage({ type: 'success', text: 'Fields autofilled by AI!' });
+      }
+    } catch (error) {
+      console.error('AI Autofill error:', error);
+      setMessage({ type: 'error', text: 'AI failed to generate content. Please fill manually.' });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -158,14 +202,26 @@ function AdminUpload() {
             
             <div className="form-group">
               <label>Region Name *</label>
-              <input
-                type="text"
-                name="regionName"
-                value={formData.regionName}
-                onChange={handleInputChange}
-                placeholder="e.g., Europe"
-                required
-              />
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <input
+                  type="text"
+                  name="regionName"
+                  value={formData.regionName}
+                  onChange={handleInputChange}
+                  placeholder="e.g., Bhaderwah"
+                  required
+                  style={{ flex: 1 }}
+                />
+                <button
+                  type="button"
+                  className="btn-ai-autofill"
+                  onClick={handleAIAutofill}
+                  disabled={loading || !formData.regionName}
+                  title="Autofill with AI"
+                >
+                  ✨ AI Magic
+                </button>
+              </div>
             </div>
 
             <div className="form-group">

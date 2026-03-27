@@ -9,11 +9,10 @@ import ReviewForm from '../../components/reviews/ReviewForm';
 import ReviewCard from '../../components/reviews/ReviewCard';
 import RegionHeroVideo from '../../components/video/RegionHeroVideo';
 import GoogleMap from '../../components/Map/GoogleMap';
-import { getStaticMapUrl, downloadStaticMap } from '../../utils/imageHelpers';
+import { getStaticMapUrl, downloadStaticMap, getFullImageUrl } from '../../utils/imageHelpers';
 import './regionDetail.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
 
 function RegionDetail() {
   const { id } = useParams();
@@ -56,6 +55,7 @@ function RegionDetail() {
     try {
       setLoading(true);
       const response = await axios.get(`${API_URL}/regions/${id}`);
+      console.log('GoogleMap: Fetched region data:', response.data);
       setRegion(response.data);
     } catch (err) {
       setError('Failed to load region details. Please try again.');
@@ -127,12 +127,10 @@ function RegionDetail() {
         <RegionHeroVideo 
           regionSlug={region.slug}
           regionName={region.regionName}
-          regionThumbnail={region.thumbnail}
+          regionThumbnail={getFullImageUrl(region.thumbnail)}
         />
         <div className="region-hero-content">
-          <button className="btn-back" onClick={() => navigate(-1)}>
-            <FiArrowLeft /> Back
-          </button>
+          {/* Back button removed as requested */}
           <h1 className="region-hero-title">{region.regionName}</h1>
           <p className="region-hero-subtitle">{region.shortDescription}</p>
           
@@ -165,7 +163,7 @@ function RegionDetail() {
                   onClick={() => openLightbox(index)}
                 >
                   <img 
-                    src={`${BASE_URL}${image}`} 
+                    src={getFullImageUrl(image)} 
                     alt={`${region.regionName} ${index + 1}`}
                     loading="lazy"
                   />
@@ -183,7 +181,7 @@ function RegionDetail() {
               {region.videos.map((video, index) => (
                 <div key={index} className="video-item">
                   <video 
-                    src={`${BASE_URL}${video}`}
+                    src={getFullImageUrl(video)}
                     controls
                     autoPlay
                     muted
@@ -197,29 +195,32 @@ function RegionDetail() {
           </section>
         )}
 
-        {/* History Section */}
-        <section className="region-section">
-          <h2 className="section-heading">History</h2>
-          <div className="info-card">
-            <p>{region.history}</p>
-          </div>
-        </section>
-
-        {/* Culture Section */}
-        <section className="region-section">
-          <h2 className="section-heading">Cultural Values</h2>
-          <div className="info-card culture-card">
-            <p>{region.culturalValues}</p>
-          </div>
-        </section>
-
-        {/* Traditions Section */}
-        <section className="region-section">
-          <h2 className="section-heading">Traditions</h2>
-          <div className="info-card traditions-card">
-            <p>{region.traditions}</p>
-          </div>
-        </section>
+        {/* Heritage & Culture Sections - Consolidated for Minimalism */}
+        {(region.history || region.culturalValues || region.traditions) && (
+          <section className="region-section heritage-consolidated">
+            <h2 className="section-heading">Heritage & Culture</h2>
+            <div className="heritage-grid">
+              {region.history && (
+                <div className="info-card">
+                  <h3 className="sub-heading">History</h3>
+                  <p>{region.history}</p>
+                </div>
+              )}
+              {region.culturalValues && (
+                <div className="info-card culture-card">
+                  <h3 className="sub-heading">Cultural Values</h3>
+                  <p>{region.culturalValues}</p>
+                </div>
+              )}
+              {region.traditions && (
+                <div className="info-card traditions-card">
+                  <h3 className="sub-heading">Traditions</h3>
+                  <p>{region.traditions}</p>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* Places to Visit */}
         {region.placesToVisit && region.placesToVisit.length > 0 && (
@@ -231,7 +232,7 @@ function RegionDetail() {
                   {place.image && (
                     <div className="place-image-wrapper">
                       <img 
-                        src={`${BASE_URL}${place.image}`} 
+                        src={getFullImageUrl(place.image)} 
                         alt={place.name}
                         loading="lazy"
                       />
@@ -246,25 +247,17 @@ function RegionDetail() {
 
                     <p>{place.description}</p>
 
-                    {/* Inline map for the place (uses GoogleMap component). Falls back to a link when no API key is configured. */}
+                    {/* Inline map for the place (uses GoogleMap component). Falls back to a static map if the live API is restricted/fails. */}
                     <div className="place-map">
                       <GoogleMap
-                        query={`${place.name}${place.address ? `, ${place.address}` : `, ${region.regionName}`}`}
-                        markers={[{ title: place.name, query: place.mapLink || place.name }]}
+                        query={`${place.name}, ${region.regionName}`}
+                        markers={[{ title: place.name, query: place.name }]}
                         height="180px"
                         zoom={13}
                       />
                     </div>
 
-                    {place.mapLink && (
-                      <a className="place-open-link" href={place.mapLink} target="_blank" rel="noreferrer">
-                        Open in Google Maps
-                      </a>
-                    )}
-
-                    <button className="place-download-btn" onClick={() => downloadPlaceMap(place)}>
-                      ⬇️ Download map
-                    </button>
+                    {/* Simplified: Removed redundant map links and buttons to keep it minimalist */}
                   </div>
                 </div>
               ))}
@@ -324,7 +317,7 @@ function RegionDetail() {
             <FiChevronLeft />
           </button>
           <img 
-            src={`${BASE_URL}${selectedImage}`} 
+            src={getFullImageUrl(selectedImage)} 
             alt="Gallery"
             onClick={(e) => e.stopPropagation()}
           />

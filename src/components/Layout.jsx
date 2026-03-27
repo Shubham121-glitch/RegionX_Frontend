@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
   const location = useLocation();
 
   // Routes where back button should be hidden
-  const hideBackButtonRoutes = ['/', '/landing', '/sign-in', '/sign-up'];
+  const hideBackButtonRoutes = ['/', '/landing', '/sign-in', '/sign-up', '/chat', '/chats'];
   const shouldShowBackButton = !hideBackButtonRoutes.includes(location.pathname);
 
   return (

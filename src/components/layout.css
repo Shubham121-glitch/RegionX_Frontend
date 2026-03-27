@@ -13,35 +13,22 @@
 .page-content {
   flex-grow: 1;
   min-height: 100vh;
-  margin-left: 250px; /* Desktop sidebar width */
+  margin-left: 250px;
   display: flex;
   flex-direction: column;
-}
-
-.back-btn-container {
-  padding: 16px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
   background: var(--ig-bg, #fafafa);
-  border-bottom: 1px solid var(--ig-border, #dbdbdb);
-  margin-bottom: 16px;
 }
 
 @media (max-width: 1159px) {
   .page-content {
-    margin-left: 72px; /* Small tablet sidebar width */
+    margin-left: 72px;
   }
 }
 
 @media (max-width: 767px) {
   .page-content {
     margin-left: 0;
-    padding-top: 60px; /* Mobile header height */
-    padding-bottom: 50px; /* Mobile bottom nav height */
-  }
-  
-  .back-btn-container {
-    top: 60px; /* Below mobile header */
+    padding-top: 60px;
+    padding-bottom: 50px;
   }
 }

@@ -2,8 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import axios from 'axios';
-import { FiSend } from 'react-icons/fi';
-import { FiArrowLeft} from 'react-icons/fi';
+import { FiSend, FiArrowLeft, FiCamera, FiInfo, FiPhone, FiVideo, FiPlusCircle, FiHeart, FiSearch, FiEdit } from 'react-icons/fi';
 import { io } from 'socket.io-client';
 import Loading from '../../components/loading/Loading';
 import MessageBubble from '../../components/chat/MessageBubble';
@@ -103,13 +102,23 @@ function ChatPage() {
     try {
       setLoading(true);
       setError(null);
-      const res = await axios.get(`${API_URL}/chat/${selectedChatId}`, {
+      
+      // If selectedChatId looks like an ObjectId (24 chars), use the ID route
+      // Otherwise use the businessId route
+      const isObjectId = /^[0-9a-fA-F]{24}$/.test(selectedChatId);
+      const url = isObjectId 
+        ? `${API_URL}/chat/id/${selectedChatId}` 
+        : `${API_URL}/chat/${selectedChatId}`;
+        
+      const res = await axios.get(url, {
         params: { userId: user?.id },
       });
+      
       const chatData = res.data?.chat || res.data;
       setChat(chatData);
       setMessages(res.data?.messages ?? chatData?.messages ?? []);
       setBusiness(res.data?.business ?? null);
+      
       if (user?.id && chatData?._id) {
         try {
           await axios.put(`${API_URL}/chat/seen`, {
@@ -136,10 +145,14 @@ function ChatPage() {
       transports: ['websocket', 'polling'],
     });
     s.on('connect', () => {
-      s.emit('register_user', { userId: user.id, userType: 'user' });
+      // Determine if we are acting as user or business based on chat data
+      const isOwner = chat?.businessId && chats.some(c => c._id === chat._id && c.isOwner);
+      const userType = isOwner ? 'business' : 'user';
+      
+      s.emit('register_user', { userId: user.id, userType });
       const roomId = chat?._id != null ? String(chat._id) : null;
       if (roomId) {
-        s.emit('join_chat', { chatId: roomId, userId: user.id, userType: 'user' });
+        s.emit('join_chat', { chatId: roomId, userId: user.id, userType });
       }
     });
     s.on('connect_error', (err) => console.error('Socket error:', err));
@@ -205,11 +218,14 @@ function ChatPage() {
       setInputValue('');
       setIsSending(true);
       try {
+        const isOwner = chat?.businessId && chats.some(c => c._id === chat._id && c.isOwner);
+        const userType = isOwner ? 'business' : 'user';
+        
         const payload = {
           chatId: chat._id,
           senderId: user.id,
-          senderType: 'user',
-          receiverId: selectedChatId || business?._id,
+          senderType: userType,
+          receiverId: isOwner ? chat.userId : (selectedChatId || business?._id),
           message: messageText,
         };
         const res = await axios.post(`${API_URL}/chat/send`, payload);
@@ -223,14 +239,14 @@ function ChatPage() {
           socket.emit('send_message', {
             chatId: roomId,
             senderId: user.id,
-            senderType: 'user',
+            senderType: userType,
             message: messageText,
             timestamp: new Date(),
           });
           socket.emit('stop_typing', {
             chatId: roomId,
             userId: user.id,
-            userType: 'user',
+            userType: userType,
           });
         }
         fetchChats();
@@ -281,19 +297,37 @@ function ChatPage() {
 
   return (
     <>
-      <div className="chat-page">
+      <div className="chat-page-container">
+        <div className="chat-page">
         <aside className={`chat-sidebar ${selectedChatId ? 'chat-sidebar-hidden' : ''}`}>
           <div className="chat-sidebar-header">
-            <h1 className="chat-sidebar-title">Messages</h1>
+            <div className="chat-sidebar-title-row">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <button 
+                  type="button" 
+                  className="chat-back-btn" 
+                  onClick={() => navigate(-1)}
+                  title="Back"
+                >
+                  <FiArrowLeft />
+                </button>
+                <h1 className="chat-sidebar-title">{user?.fullName || user?.username || 'Messages'}</h1>
+              </div>
+              <FiEdit style={{ fontSize: '1.2rem', cursor: 'pointer' }} />
+            </div>
           </div>
           <div className="chat-search-wrap">
-            <input
-              type="text"
-              placeholder="Search conversations..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="chat-search-input"
-            />
+            <div className="chat-search-container" style={{ position: 'relative' }}>
+              <FiSearch style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--ig-text-grey)' }} />
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="chat-search-input"
+                style={{ paddingLeft: '38px' }}
+              />
+            </div>
           </div>
           <div className="chat-list-wrap">
             {listError ? (
@@ -308,9 +342,9 @@ function ChatPage() {
                 <button
                   type="button"
                   key={item?._id}
-                  className={`chat-list-item ${selectedChatId === item?.businessId ? 'chat-list-item-active' : ''}`}
+                  className={`chat-list-item ${selectedChatId === (item?._id || item?.businessId) ? 'chat-list-item-active' : ''}`}
                   onClick={() => {
-                    setSelectedChatId(item?.businessId);
+                    setSelectedChatId(item?._id || item?.businessId);
                     setError(null);
                   }}
                 >
@@ -322,20 +356,20 @@ function ChatPage() {
                         e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(item?.businessName?.[0] || '?')}`;
                       }}
                     />
-                    {item?.unreadCount > 0 && (
-                      <span className="chat-list-unread">{item.unreadCount > 99 ? '99+' : item.unreadCount}</span>
-                    )}
                   </div>
                   <div className="chat-list-body">
+                    <span className="chat-list-name">{item?.businessName || 'Unknown'}</span>
                     <div className="chat-list-row">
-                      <span className="chat-list-name">{item?.businessName || 'Unknown'}</span>
+                      <p className="chat-list-preview" style={{ fontWeight: item?.unreadCount > 0 ? '600' : '400', color: item?.unreadCount > 0 ? 'var(--textP)' : 'var(--ig-text-grey)' }}>
+                        {item?.lastMessage ? item.lastMessage : 'Started a conversation'}
+                      </p>
+                      <span className="chat-list-dot">•</span>
                       <span className="chat-list-time">{formatListTime(item?.lastMessageTime)}</span>
                     </div>
-                    <p className="chat-list-preview">
-                      {item?.lastMessage ? item.lastMessage.substring(0, 60) : 'No messages yet'}
-                      {item?.lastMessage && item.lastMessage.length > 60 ? '...' : ''}
-                    </p>
                   </div>
+                  {item?.unreadCount > 0 && (
+                    <div style={{ width: '8px', height: '8px', background: '#0095f6', borderRadius: '50%' }} />
+                  )}
                 </button>
               ))
             )}
@@ -345,9 +379,18 @@ function ChatPage() {
         <section className={`chat-main ${selectedChatId ? 'chat-main-visible' : ''}`}>
           {!selectedChatId ? (
             <div className="chat-welcome">
-              <div className="chat-welcome-icon">💬</div>
-              <h2>Your Messages</h2>
-              <p>Select a conversation or start one from a business profile</p>
+              <div className="chat-welcome-icon" style={{ width: '96px', height: '96px', border: '2px solid var(--textP)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', marginBottom: '1.5rem' }}>
+                <FiSend />
+              </div>
+              <h2>Your messages</h2>
+              <p>Send private photos and messages to a friend or group</p>
+              <button 
+                className="chat-send-btn" 
+                style={{ background: '#0095f6', color: 'white', padding: '8px 16px', borderRadius: '8px', marginTop: '1rem', width: 'auto', height: 'auto' }}
+                onClick={() => navigate('/businesses')}
+              >
+                Send message
+              </button>
             </div>
           ) : (
             <>
@@ -372,8 +415,11 @@ function ChatPage() {
                 <div className="chat-thread-info">
                   <h2 className="chat-thread-name">{business?.businessTitle || 'Business'}</h2>
                   <p className="chat-thread-status">
-                    {isBusinessOnline ? <span className="chat-status-online">Active now</span> : 'Offline'}
+                    {isBusinessOnline ? 'Active now' : 'Offline'}
                   </p>
+                </div>
+                <div className="chat-thread-actions">
+                  {/* Icons removed as per user request */}
                 </div>
               </header>
 
@@ -417,30 +463,41 @@ function ChatPage() {
                 )}
               </div>
 
-              <form onSubmit={handleSendMessage} className="chat-input-wrap">
-                <input
-                  ref={inputRef}
-                  type="text"
-                  placeholder="Type a message..."
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onInput={handleTyping}
-                  disabled={isSending || loading}
-                  className="chat-input"
-                />
-                <button
-                  type="submit"
-                  disabled={!inputValue.trim() || isSending || loading}
-                  className="chat-send-btn"
-                  aria-label="Send"
-                >
-                  <FiSend />
-                </button>
-              </form>
+              <div className="chat-input-container">
+                <form onSubmit={handleSendMessage} className="chat-input-wrap">
+                  <div className="chat-input-icons-left">
+                    <FiPlusCircle style={{ cursor: 'pointer' }} title="Add attachment" />
+                  </div>
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    placeholder="Message..."
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onInput={handleTyping}
+                    disabled={isSending || loading}
+                    className="chat-input"
+                  />
+                  {inputValue.trim() ? (
+                    <button
+                      type="submit"
+                      disabled={isSending || loading}
+                      className="chat-send-btn"
+                    >
+                      Send
+                    </button>
+                  ) : (
+                    <div style={{ display: 'flex', gap: '12px', fontSize: '1.4rem', color: 'var(--textP)' }}>
+                      <FiCamera style={{ cursor: 'pointer' }} />
+                    </div>
+                  )}
+                </form>
+              </div>
             </>
           )}
         </section>
       </div>
+    </div>
     </>
   );
 }

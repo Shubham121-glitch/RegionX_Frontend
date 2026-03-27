@@ -14,7 +14,12 @@ function MessageBubble({ message, isOwn, userType }) {
   return (
     <div className={`message-bubble ${isOwn ? 'own' : 'other'} ${userType}`}>
       <div className="message-content">
-        <p className="message-text">{message.message}</p>
+        {message.mediaUrl && (
+          <div className="chat-image-content" onClick={() => window.open(message.mediaUrl, '_blank')}>
+            <img src={message.mediaUrl} alt="Sent image" />
+          </div>
+        )}
+        {message.message && <p className="message-text">{message.message}</p>}
         <span className="message-time">{formatTime(message.createdAt)}</span>
       </div>
     </div>

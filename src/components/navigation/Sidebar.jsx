@@ -8,7 +8,6 @@ import { FaRobot } from 'react-icons/fa6';
 import { SignedIn, SignedOut, UserButton, useUser, SignInButton } from '@clerk/clerk-react';
 import { useChatNotifications } from '../../hooks/useChatNotifications';
 import ChatNotificationBadge from '../ChatNotificationBadge';
-import SaazChatWindow from '../ai-chatbot/SaazChatWindow';
 import './sidebar.css';
 
 const Sidebar = () => {
@@ -138,12 +137,6 @@ const Sidebar = () => {
           </div>
         </SignedIn>
       </nav>
-
-      {/* AI Chatbot */}
-      <SaazChatWindow 
-        isOpen={isChatOpen} 
-        onClose={() => setIsChatOpen(false)} 
-      />
     </>
   );
 };

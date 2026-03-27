@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiMapPin, FiStar, FiSearch, FiArrowRight } from 'react-icons/fi';
+import { FiMapPin, FiStar, FiSearch, FiArrowRight , FiHeart} from 'react-icons/fi';
 import axios from 'axios';
 import StarRating from '../../components/reviews/StarRating';
 import Loading from '../../components/loading/Loading';
+import { getFullImageUrl } from '../../utils/imageHelpers';
 import './landing.css';
 
 const monthlyRecommendations = {
@@ -71,7 +72,6 @@ const monthlyRecommendations = {
 };
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
 
 const monthNames = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -135,33 +135,35 @@ function Landing() {
       </div>
 
       {/* Featured/Recommendations Section */}
-      <section className="dashboard-section" id="explore">
-        <div className="section-header">
-          <h2 className="section-title">Top picks for {monthNames[currentMonth]}</h2>
-        </div>
-        
-        <div className="recommendations-card-grid">
-          {recommendations.map((rec, idx) => (
-            <div className="rec-card" key={idx}>
-              <div className="rec-image-wrapper">
-                <img src={rec.image} alt={rec.name} className="rec-image" />
-                <div className="rec-overlay">
-                  <span className="rec-badge">Featured</span>
+      {!searchQuery && (
+        <section className="dashboard-section" id="explore">
+          <div className="section-header">
+            <h2 className="section-title">Top picks for {monthNames[currentMonth]}</h2>
+          </div>
+          
+          <div className="recommendations-card-grid">
+            {recommendations.map((rec, idx) => (
+              <div className="rec-card" key={idx}>
+                <div className="rec-image-wrapper">
+                  <img src={rec.image} alt={rec.name} className="rec-image" />
+                  <div className="rec-overlay">
+                    <span className="rec-badge">Featured</span>
+                  </div>
+                </div>
+                <div className="rec-info">
+                  <h3>{rec.name}</h3>
+                  <p>{rec.reason}</p>
                 </div>
               </div>
-              <div className="rec-info">
-                <h3>{rec.name}</h3>
-                <p>{rec.reason}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Regions Grid Section */}
       <section className="dashboard-section">
         <div className="section-header">
-          <h2 className="section-title">All Regions</h2>
+          <h2 className="section-title">{searchQuery ? 'Search Results' : 'All Regions'}</h2>
         </div>
 
         {loading ? (
@@ -176,7 +178,7 @@ function Landing() {
                   onClick={() => handleRegionClick(region._id)}
                 >
                   <div className="region-img-container">
-                    <img src={`${BASE_URL}${region.thumbnail}`} alt={region.regionName} loading="lazy" />
+                    <img src={getFullImageUrl(region.thumbnail)} alt={region.regionName} loading="lazy" />
                     
                     <div className="region-overlay-actions">
                       <button className="overlay-btn favorite"><FiHeart /></button>

@@ -121,17 +121,6 @@ const useSaazVoice = (onWakeWordDetected) => {
       
       setError(errorMessage);
       setIsListening(false);
-      
-      // Attempt to restart recognition after a delay if it was interrupted
-      if (['no-speech', 'network'].includes(event.error)) {
-        setTimeout(() => {
-          try {
-            recognitionInstance.start();
-          } catch (err) {
-            console.error('Error restarting:', err);
-          }
-        }, 1000);
-      }
     };
 
     recognitionInstance.onend = () => {
@@ -153,29 +142,8 @@ const useSaazVoice = (onWakeWordDetected) => {
     };
   }, [detectWakeWord]);
 
-  // Helper function to request microphone permission
-  const requestMicrophonePermission = useCallback(async () => {
-    try {
-      // Check if we already have permission by accessing the devices
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const audioInputDevices = devices.filter(device => device.kind === 'audioinput');
-        
-      if (audioInputDevices.length === 0) {
-        throw new Error('No microphone found');
-      }
-        
-      // Request permission to access the microphone
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      // Stop the stream immediately to release the mic
-      stream.getTracks().forEach(track => track.stop());
-      return true;
-    } catch (err) {
-      throw err;
-    }
-  }, []);
-  
   // Start listening
-  const startListening = useCallback(async () => {
+  const startListening = useCallback(() => {
     if (!recognition) {
       setError('Speech recognition not supported in this browser');
       setIsListening(false);
@@ -183,30 +151,25 @@ const useSaazVoice = (onWakeWordDetected) => {
     }
   
     try {
-      // Request microphone permission first
-      await requestMicrophonePermission();
-        
       recognition.start();
       setIsListening(true);
       setError(null);
-      console.log('Speech recognition started successfully'); // Debug log
+      console.log('Speech recognition started successfully'); 
     } catch (err) {
       console.error('Microphone access error:', err);
-        
-      // Handle different types of permission errors
-      if (err.name === 'NotAllowedError' || err.message.includes('permission')) {
+      // If it's already started, recognition.start() throws an InvalidStateError
+      if (err.name === 'InvalidStateError') {
+        setIsListening(true);
+        setError(null);
+      } else if (err.name === 'NotAllowedError' || err.message.includes('permission')) {
         setError('Microphone access denied. Please allow microphone permission in your browser settings.');
-      } else if (err.name === 'NotFoundError' || err.message.includes('devices')) {
-        setError('No microphone found. Please connect a microphone and try again.');
-      } else if (err.name === 'NotReadableError') {
-        setError('Microphone is not available. Another application may be using it.');
+        setIsListening(false);
       } else {
         setError('Could not access microphone. Please check your device settings.');
+        setIsListening(false);
       }
-        
-      setIsListening(false);
     }
-  }, [recognition, requestMicrophonePermission]);
+  }, [recognition]);
 
   // Stop listening
   const stopListening = useCallback(() => {
@@ -290,6 +253,8 @@ const useSaazVoice = (onWakeWordDetected) => {
       isListening,
       isProcessing,
       transcript: finalTranscript + transcript,
+      interimTranscript: transcript,
+      finalTranscript: finalTranscript,
       hasError: !!error,
       error
     };
@@ -305,6 +270,8 @@ const useSaazVoice = (onWakeWordDetected) => {
     isListening,
     isProcessing,
     transcript: finalTranscript + transcript,
+    interimTranscript: transcript,
+    finalTranscript,
     error,
     startListening,
     stopListening,

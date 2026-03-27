@@ -1,5 +1,13 @@
 // frontend/src/utils/imageHelpers.js
 
+export const getFullImageUrl = (path) => {
+  if (!path) return '';
+  if (path.startsWith('http') || path.startsWith('data:')) return path;
+  const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${BASE_URL}${cleanPath}`;
+};
+
 /**
  * Handle image loading errors with fallback options
  */
@@ -72,8 +80,10 @@ export const getSafeImageUrl = (url, fallback = null) => {
  * - markers: [{ lat, lng } | { query } | 'address string']
  * - center: { lat, lng } | 'address string'
  */
-export const getStaticMapUrl = ({ markers = [], center, zoom = 15, size = '800x400', mapType = 'roadmap', scale = 2, apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY } = {}) => {
-  if (!apiKey) return null;
+export const getStaticMapUrl = ({ markers = [], center, zoom = 15, size = '800x400', mapType = 'roadmap', scale = 2, apiKey } = {}) => {
+  const rawApiKey = apiKey || import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+  const safeApiKey = rawApiKey ? rawApiKey.trim() : null;
+  if (!safeApiKey) return null;
 
   const params = new URLSearchParams();
   params.set('size', size);
@@ -103,7 +113,7 @@ export const getStaticMapUrl = ({ markers = [], center, zoom = 15, size = '800x4
     else if (center.lat != null && center.lng != null) params.set('center', `${center.lat},${center.lng}`);
   }
 
-  params.set('key', apiKey);
+  params.set('key', safeApiKey);
   return `https://maps.googleapis.com/maps/api/staticmap?${params.toString()}`;
 };
 

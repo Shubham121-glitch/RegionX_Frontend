@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useUser } from '@clerk/clerk-react';
+import { useState, useEffect, useRef } from 'react';
+import { useUser, useAuth } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { FiUser, FiGrid, FiBriefcase, FiPlus, FiSettings, FiCheckCircle, FiClock, FiXCircle, FiMapPin, FiPhone, FiMail, FiMessageCircle, FiEdit3 } from 'react-icons/fi';
+import { FiUser, FiGrid, FiBriefcase, FiPlus, FiSettings, FiCheckCircle, FiClock, FiXCircle, FiMapPin, FiPhone, FiMail, FiMessageCircle, FiEdit3, FiVideo } from 'react-icons/fi';
 import Loading from '../../components/loading/Loading';
 import './profile.css';
 
@@ -11,11 +11,15 @@ const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').r
 
 function Profile() {
   const { user, isLoaded } = useUser();
+  const { getToken } = useAuth();
   const navigate = useNavigate();
   const [business, setBusiness] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [shorts, setShorts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isUploading, setIsUploading] = useState(false);
   const [activeTab, setActiveTab] = useState('posts');
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (isLoaded && user) {
@@ -25,6 +29,7 @@ function Profile() {
 
   const fetchBusinessData = async () => {
     try {
+      // Fetch Business
       const businessRes = await axios.get(`${API_URL}/business/user/${user.id}`);
       setBusiness(businessRes.data);
       
@@ -32,12 +37,55 @@ function Profile() {
         const postsRes = await axios.get(`${API_URL}/business-posts/business/${businessRes.data._id}`);
         setPosts(postsRes.data);
       }
+
+      // Fetch Shorts by this user
+      const shortsRes = await axios.get(`${API_URL}/videos`); // We'll filter on frontend or add backend route
+      // For now, filter by userId on frontend
+      const myShorts = (shortsRes.data?.videos || []).filter(v => v.userId === user.id);
+      setShorts(myShorts);
+
     } catch (error) {
       if (error.response?.status !== 404) {
-        console.error('Error fetching business:', error);
+        console.error('Error fetching data:', error);
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleUploadShort = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 12 * 1024 * 1024) {
+      alert('Short video is too large! Please keep it under 12MB.');
+      return;
+    }
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('video', file);
+    formData.append('caption', `A new short by ${user.fullName}`);
+
+    try {
+      const token = await getToken();
+      const res = await axios.post(`${API_URL}/videos`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (res.data.success) {
+        alert('Short uploaded successfully!');
+        fetchBusinessData(); // Refresh list
+      }
+    } catch (err) {
+      console.error('Short upload failed:', err);
+      alert('Failed to upload short.');
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
@@ -63,11 +111,15 @@ function Profile() {
         <div className="profile-header-content">
           {/* Avatar */}
           <div className="profile-avatar-large">
-            {user.imageUrl ? (
-              <img src={user.imageUrl} alt={user.fullName} />
-            ) : (
-              <FiUser className="avatar-placeholder" />
-            )}
+            <div className="avatar-ring">
+              {user.imageUrl ? (
+                <img src={user.imageUrl} alt={user.fullName} />
+              ) : (
+                <div className="avatar-placeholder">
+                  <FiUser />
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Profile Info */}
@@ -187,6 +239,12 @@ function Profile() {
           <FiGrid /> POSTS
         </button>
         <button 
+          className={`tab-btn ${activeTab === 'shorts' ? 'active' : ''}`}
+          onClick={() => setActiveTab('shorts')}
+        >
+          <FiVideo /> SHORTS
+        </button>
+        <button 
           className={`tab-btn ${activeTab === 'business' ? 'active' : ''}`}
           onClick={() => setActiveTab('business')}
         >
@@ -240,6 +298,52 @@ function Profile() {
                 </button>
               </div>
             )}
+          </div>
+        ) : activeTab === 'shorts' ? (
+          <div className="shorts-profile-grid">
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              accept="video/*" 
+              onChange={handleUploadShort} 
+              hidden 
+            />
+            
+            <div className="shorts-grid-header">
+              <h3>My Shorts</h3>
+              <button 
+                className="btn-upload-short" 
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isUploading}
+              >
+                {isUploading ? 'Uploading...' : <><FiPlus /> Upload Short</>}
+              </button>
+            </div>
+
+            <div className="posts-grid">
+              {shorts.length > 0 ? (
+                shorts.map((short) => (
+                  <div key={short._id} className="post-grid-item short-item">
+                    <video src={short.videoUrl} muted />
+                    <div className="post-overlay">
+                      <FiVideo className="short-icon-overlay" />
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="empty-state">
+                  <FiVideo className="empty-icon" />
+                  <h3>No Shorts Yet</h3>
+                  <p>Share your moments in vertical video</p>
+                  <button 
+                    className="btn-profile btn-create"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    Upload Your First Short
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         ) : (
           <div className="business-info-section">

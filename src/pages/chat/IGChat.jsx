@@ -7,7 +7,7 @@ import MessageBubble from '../../components/chat/MessageBubble';
 import TypingIndicator from '../../components/chat/TypingIndicator';
 import SeenIndicator from '../../components/chat/SeenIndicator';
 import Loading from '../../components/loading/Loading';
-import { FiArrowLeft, FiSend, FiPhone, FiVideo, FiInfo } from 'react-icons/fi';
+import { FiArrowLeft, FiSend, FiPhone, FiVideo, FiInfo, FiCamera, FiImage, FiX } from 'react-icons/fi';
 import './igChat.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -30,6 +30,8 @@ function IGChat() {
   const [business, setBusiness] = useState(null);
   const [chat, setChat] = useState(null);
   const [inputValue, setInputValue] = useState('');
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [listError, setListError] = useState(null);
@@ -42,6 +44,7 @@ function IGChat() {
   const messagesEndRef = useRef(null);
   const typingTimeoutRef = useRef(null);
   const inputRef = useRef(null);
+  const imageInputRef = useRef(null);
 
   // Redirect if not signed in
   useEffect(() => {
@@ -188,6 +191,8 @@ function IGChat() {
             senderId: data.senderId,
             senderType: data.senderType,
             message: data.message,
+            mediaUrl: data.mediaUrl,
+            mediaType: data.mediaType,
             seen: data.seen || false,
             createdAt: data.createdAt || data.timestamp,
             seenAt: data.seenAt,
@@ -251,62 +256,88 @@ function IGChat() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const handleImageSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeSelectedImage = () => {
+    setSelectedImage(null);
+    setImagePreview(null);
+    if (imageInputRef.current) {
+      imageInputRef.current.value = ''; // Clear the file input
+    }
+  };
+
   // Handle send message
   const handleSendMessage = useCallback(
     async (e) => {
       e?.preventDefault();
-      if (!inputValue.trim() || !chat?._id || isSending) return;
+      const chatId = chat?._id;
+      const userType = 'user';
 
-      const messageText = inputValue;
-      setInputValue('');
+      if ((!inputValue.trim() && !selectedImage) || isSending || !chatId) return;
+
       setIsSending(true);
-
       try {
-        const payload = {
-          chatId: chat._id,
-          senderId: user.id,
-          senderType: 'user',
-          receiverId: selectedChatId || business?._id,
-          message: messageText,
-        };
+        const formData = new FormData();
+        formData.append('chatId', chatId);
+        formData.append('senderId', user.id);
+        formData.append('senderType', userType);
         
-        console.log('📨 Sending message:', payload);
+        if (inputValue.trim()) {
+          formData.append('message', inputValue.trim());
+        }
         
-        const response = await axios.post(
-          `${API_URL}/chat/send`,
-          payload
-        );
+        if (selectedImage) {
+          formData.append('image', selectedImage);
+        }
 
-        console.log('✅ Message sent response:', response.data);
-        
-        const newMessage = response.data?.data || response.data?.message;
-        if (newMessage) {
-          setMessages((prev) => [...prev, newMessage]);
+        const response = await axios.post(`${API_URL}/chat/send`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        if (response.data.success) {
+          setInputValue('');
+          removeSelectedImage();
           setError(null); // Clear any previous errors
-        }
+          
+          // Emit via socket
+          if (socket?.connected) {
+            socket.emit('send_message', {
+              chatId,
+              senderId: user.id,
+              senderType: userType,
+              message: response.data.data.message || '',
+              mediaUrl: response.data.data.mediaUrl,
+              mediaType: response.data.data.mediaType,
+              timestamp: new Date().toISOString(),
+              _id: response.data.data._id
+            });
+            socket.emit('stop_typing', {
+              chatId: chatId,
+              userId: user.id,
+              userType: 'user',
+            });
+          }
 
-        if (socket?.connected) {
-          const roomId = String(chat._id);
-          socket.emit('send_message', {
-            chatId: roomId,
-            senderId: user.id,
-            senderType: 'user',
-            message: messageText,
-            timestamp: new Date(),
-          });
-          socket.emit('stop_typing', {
-            chatId: roomId,
-            userId: user.id,
-            userType: 'user',
-          });
+          // Update local state (socket will also add it, but this ensures immediate display)
+          setMessages((prev) => [...prev, response.data.data]);
+          // Refresh chat list
+          fetchChats();
         }
-
-        // Refresh chat list
-        fetchChats();
       } catch (err) {
         console.error('❌ Error sending message:', err);
         console.error('Error response:', err?.response?.data);
-        setInputValue(messageText);
         setError('Failed to send message. Please try again.');
       } finally {
         setIsSending(false);
@@ -524,11 +555,31 @@ function IGChat() {
 
           {/* Input Area */}
           <div className="ig-input-area">
+            {imagePreview && (
+              <div className="image-preview-container-ig">
+                <img src={imagePreview} alt="Preview" />
+                <button className="remove-preview-ig" onClick={removeSelectedImage}>
+                  <FiX />
+                </button>
+              </div>
+            )}
             <form onSubmit={handleSendMessage} className="message-form">
+              <div className="input-actions-left">
+                <input
+                  type="file"
+                  id="chat-image-upload"
+                  accept="image/*"
+                  onChange={handleImageSelect}
+                  hidden
+                />
+                <label htmlFor="chat-image-upload" className="action-icon-ig" title="Add Image">
+                  <FiImage />
+                </label>
+              </div>
               <input
                 ref={inputRef}
                 type="text"
-                placeholder="Aa"
+                placeholder="Message..."
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onInput={handleTyping}
@@ -537,10 +588,10 @@ function IGChat() {
               />
               <button
                 type="submit"
-                disabled={!inputValue.trim() || isSending || loading}
+                disabled={(!inputValue.trim() && !selectedImage) || isSending || loading}
                 className="send-btn-ig"
               >
-                <FiSend />
+                {isSending ? '...' : (inputValue.trim() || selectedImage ? 'Send' : <FiSend />)}
               </button>
             </form>
           </div>

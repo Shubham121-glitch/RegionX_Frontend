@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import VideoBackground from './VideoBackground';
+import { getFullImageUrl } from '../../utils/imageHelpers';
 import './regionHeroVideo.css';
 
 // Video data for regions - Replace with actual 4K videos
@@ -50,9 +51,7 @@ const defaultVideo = {
   posterNight: '/videos/default-night-poster.jpg'
 };
 
-const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
-
-function RegionHeroVideo({ regionSlug, regionName, regionThumbnail }) {
+function RegionHeroVideo({ regionSlug, regionName, regionThumbnail, videoUrl }) {
   const [videoData, setVideoData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -73,13 +72,31 @@ function RegionHeroVideo({ regionSlug, regionName, regionThumbnail }) {
     );
   }
 
+  // If personal videoUrl provided, show that
+  if (videoUrl) {
+    return (
+      <div className="region-hero-video-container">
+        <video 
+          src={videoUrl}
+          autoPlay 
+          muted 
+          loop 
+          playsInline
+          className="region-hero-custom-video"
+          poster={getFullImageUrl(regionThumbnail)}
+        />
+        <div className="region-hero-custom-overlay" />
+      </div>
+    );
+  }
+
   // If no video data or using fallback, show thumbnail with gradient
   if (!videoData || videoData === defaultVideo) {
     return (
       <div 
         className="region-hero-fallback"
         style={{
-          backgroundImage: `url(${BASE_URL}${regionThumbnail})`
+          backgroundImage: `url(${getFullImageUrl(regionThumbnail)})`
         }}
       >
         <div className="region-hero-fallback-overlay" />
@@ -90,10 +107,10 @@ function RegionHeroVideo({ regionSlug, regionName, regionThumbnail }) {
   return (
     <div className="region-hero-video-container">
       <VideoBackground
-        dayVideo={videoData.day}
-        nightVideo={videoData.night}
-        posterDay={videoData.posterDay}
-        posterNight={videoData.posterNight}
+        dayVideo={getFullImageUrl(videoData.day)}
+        nightVideo={getFullImageUrl(videoData.night)}
+        posterDay={getFullImageUrl(videoData.posterDay)}
+        posterNight={getFullImageUrl(videoData.posterNight)}
         overlay={true}
         overlayOpacity={0.4}
         zoomEffect={true}

@@ -16,8 +16,8 @@ const BackButton = () => {
   };
 
   return (
-    <button className="back-button" onClick={handleBack}>
-      <FiArrowLeft /> Back
+    <button className="back-button" onClick={handleBack} title="Go back">
+      <FiArrowLeft />
     </button>
   );
 };

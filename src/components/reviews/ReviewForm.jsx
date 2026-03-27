@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import { FiUpload, FiX, FiSend } from 'react-icons/fi';
+import { FiCamera, FiVideo, FiX, FiSend } from 'react-icons/fi';
 import axios from 'axios';
 import StarRating from './StarRating';
 import './reviewForm.css';
@@ -125,26 +125,22 @@ function ReviewForm({ regionId, onReviewAdded }) {
 
       <form onSubmit={handleSubmit} className="review-form">
         {/* Star Rating */}
-        <div className="form-group">
-          <label>Your Rating *</label>
+        <div className="form-group rating-group">
           <StarRating rating={rating} setRating={setRating} size="large" />
         </div>
 
         {/* Review Text */}
         <div className="form-group">
-          <label>Your Review *</label>
           <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            placeholder="Share your experience with this region..."
-            rows="4"
+            placeholder="Write a review..."
             required
           />
         </div>
 
         {/* Media Upload */}
         <div className="form-group media-upload-group">
-          <label>Add Media (Optional)</label>
           <div className="media-uploads">
             {/* Image Upload */}
             <div className="media-upload-item">
@@ -155,9 +151,8 @@ function ReviewForm({ regionId, onReviewAdded }) {
                 id="review-image"
                 hidden
               />
-              <label htmlFor="review-image" className="media-upload-btn">
-                <FiUpload />
-                <span>Photo</span>
+              <label htmlFor="review-image" className="media-upload-btn" title="Add Photo">
+                <FiCamera />
               </label>
               {image && (
                 <div className="media-preview">
@@ -178,9 +173,8 @@ function ReviewForm({ regionId, onReviewAdded }) {
                 id="review-video"
                 hidden
               />
-              <label htmlFor="review-video" className="media-upload-btn">
-                <FiUpload />
-                <span>Video (30s)</span>
+              <label htmlFor="review-video" className="media-upload-btn" title="Add Video">
+                <FiVideo />
               </label>
               {video && (
                 <div className="media-preview">
@@ -203,9 +197,7 @@ function ReviewForm({ regionId, onReviewAdded }) {
           {loading ? (
             <span className="spinner"></span>
           ) : (
-            <>
-              <FiSend /> Submit Review
-            </>
+            'Post'
           )}
         </button>
       </form>

@@ -157,3 +157,25 @@
     rgba(0, 0, 0, 0.5) 100%
   );
 }
+
+.region-hero-custom-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.region-hero-custom-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.4) 10%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  pointer-events: none;
+}

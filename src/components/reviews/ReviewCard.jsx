@@ -3,11 +3,11 @@ import { FiTrash2, FiEdit2, FiX, FiCheck, FiThumbsUp, FiThumbsDown, FiMessageSqu
 import { useUser, useAuth } from '@clerk/clerk-react';
 import axios from 'axios';
 import StarRating from './StarRating';
+import { getFullImageUrl, handleImageError } from '../../utils/imageHelpers';
 import './reviewCard.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-const BASE_URL = (import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000').replace(/\/$/, '');
 
 function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
   const { user, isSignedIn } = useUser();
@@ -203,30 +203,28 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
           </div>
           <div className="reviewer-details">
             <div className="reviewer-name-row">
-              <h4 className="reviewer-name">{review.username}</h4>
-              {hasReply && (
-                <span className="reply-badge" title="Business has replied to this review">
-                  <FiMessageSquare /> Replied
-                </span>
+              <span className="reviewer-name">{review.username}</span>
+              <p className="review-comment">{review.comment}</p>
+            </div>
+            
+            <div className="review-meta">
+              <span className="review-date">{formatDate(review.createdAt)}</span>
+              <button 
+                className={`vote-btn ${userVote === 'helpful' ? 'active' : ''}`}
+                onClick={() => handleVote('helpful')}
+                disabled={voteLoading}
+              >
+                {helpfulVotes} likes
+              </button>
+              {isOwner && !isEditing && (
+                <div className="review-actions-owner">
+                  <button onClick={handleEdit} className="action-btn">Edit</button>
+                  <button onClick={handleDelete} className="action-btn delete-btn">Delete</button>
+                </div>
               )}
             </div>
-            <span className="review-date">{formatDate(review.createdAt)}</span>
-            {review.updatedAt !== review.createdAt && (
-              <span className="edited-tag">(edited)</span>
-            )}
           </div>
         </div>
-
-        {isOwner && !isEditing && (
-          <div className="review-actions-owner">
-            <button onClick={handleEdit} className="action-btn edit-btn" title="Edit">
-              <FiEdit2 />
-            </button>
-            <button onClick={handleDelete} className="action-btn delete-btn" title="Delete">
-              <FiTrash2 />
-            </button>
-          </div>
-        )}
       </div>
 
       {isEditing ? (
@@ -240,32 +238,29 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
           />
           <div className="edit-actions">
             <button onClick={handleCancelEdit} className="btn-cancel">
-              <FiX /> Cancel
+              Cancel
             </button>
             <button 
               onClick={handleSaveEdit} 
               className="btn-save"
               disabled={loading}
             >
-              {loading ? 'Saving...' : <><FiCheck /> Save</>}
+              {loading ? 'Saving...' : 'Save'}
             </button>
           </div>
         </div>
       ) : (
         <>
-          <div className="review-rating">
-            <StarRating rating={review.rating} readOnly size="small" />
-          </div>
-
-          <p className="review-comment">{review.comment}</p>
+          {/* Comment moved inline above */}
 
           {review.image && (
             <div className="review-media">
               <img 
-                src={`${BASE_URL}${review.image}`} 
+                src={getFullImageUrl(review.image)} 
                 alt="Review" 
                 className="review-image" 
-                onClick={() => window.open(`${BASE_URL}${review.image}`, '_blank')}
+                onError={(e) => handleImageError(e, 'placeholder')}
+                onClick={() => window.open(getFullImageUrl(review.image), '_blank')}
               />
             </div>
           )}
@@ -273,7 +268,7 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
           {review.video && (
             <div className="review-media">
               <video 
-                src={`${BASE_URL}${review.video}`} 
+                src={getFullImageUrl(review.video)} 
                 controls
                 className="review-video"
               />
@@ -281,33 +276,19 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
           )}
 
           {/* Voting Section */}
-          <div className="review-voting">
-            <button 
-              className={`vote-btn ${userVote === 'helpful' ? 'active' : ''}`}
-              onClick={() => handleVote('helpful')}
-              disabled={voteLoading}
-            >
-              <FiThumbsUp /> Helpful ({helpfulVotes})
-            </button>
-            <button 
-              className={`vote-btn ${userVote === 'notHelpful' ? 'active' : ''}`}
-              onClick={() => handleVote('notHelpful')}
-              disabled={voteLoading}
-            >
-              <FiThumbsDown /> Not Helpful ({notHelpfulVotes})
-            </button>
-          </div>
+          {/* Voting moved into meta row above */}
 
           {/* Reply Section */}
           {hasReply && (
             <div className="review-reply">
-              <div className="reply-header">
-                <FiMessageSquare className="reply-icon" />
-                <span className="reply-label">Business Reply</span>
-                <span className="reply-date">
-                  {review.reply.repliedAt && formatDate(review.reply.repliedAt)}
-                </span>
-              </div>
+              <div className="reply-line" />
+              <div className="reply-content">
+                <div className="reply-header">
+                  <span className="reply-label">Business Reply</span>
+                  <span className="reply-date">
+                    {review.reply.repliedAt && formatDate(review.reply.repliedAt)}
+                  </span>
+                </div>
               
               {isEditingReply ? (
                 <div className="reply-edit-form">
@@ -323,14 +304,14 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
                       onClick={() => { setIsEditingReply(false); setReplyText(review.reply.text); }}
                       className="btn-cancel"
                     >
-                      <FiX /> Cancel
+                      Cancel
                     </button>
                     <button 
                       onClick={handleEditReply}
                       className="btn-save"
                       disabled={loading}
                     >
-                      {loading ? 'Saving...' : <><FiCheck /> Save</>}
+                      {loading ? 'Saving...' : 'Save'}
                     </button>
                   </div>
                 </div>
@@ -358,7 +339,8 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
                 </>
               )}
             </div>
-          )}
+          </div>
+        )}
 
           {/* Business Owner Reply Form */}
           {isBusinessOwner && !hasReply && !isReplying && (
@@ -384,14 +366,14 @@ function ReviewCard({ review, onDelete, onUpdate, isBusinessOwner = false }) {
                   onClick={() => { setIsReplying(false); setReplyText(''); }}
                   className="btn-cancel"
                 >
-                  <FiX /> Cancel
+                  Cancel
                 </button>
                 <button 
                   onClick={handleSubmitReply}
                   className="btn-save"
                   disabled={loading || !replyText.trim()}
                 >
-                  {loading ? 'Posting...' : <><FiCheck /> Post Reply</>}
+                  {loading ? 'Posting...' : 'Post Reply'}
                 </button>
               </div>
             </div>
